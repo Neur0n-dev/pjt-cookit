@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 - Cookit</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
+  <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/join.css?v=<%= Date.now() %>">
+</head>
+<body>
+    <main class="container join-container">
+        <section class="join-card" aria-label="회원가입">
+            <!-- Brand -->
+            <a class="join-brand" href="/" aria-label="Cookit 홈으로">
+                <span class="join-icon" aria-hidden="true">🍳</span>
+                <div class="join-title-wrap">
+                    <h1 class="join-title">Cook<span class="join-title-accent">it</span></h1>
+                    <p class="join-sub">포트폴리오용 데모 계정을 생성합니다.</p>
+                </div>
+            </a>
+
+            <form class="join-form" method="POST" action="/join">
+                <!-- ID -->
+                <div class="field">
+                    <label class="label" for="userId">아이디</label>
+                    <div class="input-wrap">
+                        <input
+                        id="userId"
+                        name="userId"
+                        type="text"
+                        placeholder="아이디를 입력하세요"
+                        autocomplete="username"
+                        required
+                        />
+                        <button type="button" class="btn-check" data-check="userId">중복확인</button>
+                        <button type="button" class="icon-btn" data-clear="#userId" aria-label="지우기">✕</button>
+                    </div>
+                    <!-- 메시지 -->
+                    <p class="field-msg" id="msg-userId" aria-live="polite"></p>
+                </div>
+
+                <!-- PW -->
+                <div class="field">
+                    <label class="label" for="password">비밀번호</label>
+                    <div class="input-wrap">
+                        <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="비밀번호를 입력하세요"
+                        autocomplete="new-password"
+                        required
+                        />
+                        <button type="button" class="icon-btn" data-toggle="#password" aria-label="비밀번호 보기">👁</button>
+                        <button type="button" class="icon-btn" data-clear="#password" aria-label="지우기">✕</button>
+                    </div>
+                    <!-- 메시지 -->
+                    <p class="field-hint">* 8자 이상을 권장합니다.</p>
+                </div>
+
+                <!-- 이름 -->
+                <div class="field">
+                    <label class="label" for="name">이름</label>
+                    <div class="input-wrap">
+                        <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="이름을 입력하세요"
+                        autocomplete="name"
+                        required
+                        />
+                        <button type="button" class="icon-btn" data-clear="#name" aria-label="지우기">✕</button>
+                    </div>
+                </div>
+
+                <!-- 닉네임 -->
+                <div class="field">
+                    <label class="label" for="nickname">닉네임</label>
+                    <div class="input-wrap">
+                        <input
+                        id="nickname"
+                        name="nickname"
+                        type="text"
+                        placeholder="닉네임을 입력하세요"
+                        autocomplete="nickname"
+                        required
+                        />
+                        <button type="button" class="btn-check" data-check="nickname">중복확인</button>
+                        <button type="button" class="icon-btn" data-clear="#nickname" aria-label="지우기">✕</button>
+                    </div>
+                    <!-- 메시지 -->
+                    <p class="field-msg" id="msg-nickname" aria-live="polite"></p>
+                </div>
+
+                <!-- Error -->
+                <% if (typeof error !== 'undefined' && error) { %>
+                <div class="join-alert" role="alert"><%= error %></div>
+                <% } %>
+
+                <button class="btn-primary" type="submit">회원가입</button>
+
+            </form>
+            <div class="join-links">
+                <a href="/login" class="muted">이미 계정이 있어요</a>
+                <a href="/" class="muted">홈으로</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <%- include('../partials/footer') %>
+
+    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
+</body>
+</html>

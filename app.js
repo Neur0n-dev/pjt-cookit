@@ -13,8 +13,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // TODO cookit 페이지 router 나중에 변경 해야되나?
-app.get('/', (req, res) => res.render('pages/main'));
-app.get('/login', (req, res) => res.render('pages/login'));
+app.get('/', (req, res) => res.render('pages/main')); // 메인페이지
+app.get('/login', (req, res) => res.render('pages/login')); // 로그인페이지
+app.get('/join', (req, res) => res.render('pages/join')); // 회원가입페이지
 
 // app.use(logger('dev'));
 app.use(logger(function (tokens, req, res) {
