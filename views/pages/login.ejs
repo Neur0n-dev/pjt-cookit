@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cookit</title>
+    <title>로그인 - Cookit</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
     <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
     <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
@@ -62,9 +62,9 @@
                     </form>
 
                     <div class="login-links" aria-label="도움 링크">
-                        <a href="#" class="muted">비밀번호 찾기</a>
-                        <a href="#" class="muted">아이디 찾기</a>
-                        <a href="#" class="muted">회원가입</a>
+                        <a href="/find-id" class="muted">아이디 찾기</a>
+                        <a href="/find-pw" class="muted">비밀번호 찾기</a>
+                        <a href="/join" class="muted">회원가입</a>
                     </div>
                 </div>
 
@@ -88,14 +88,13 @@
                 </div>
             </div>
 
-            <p class="footnote">Built by Neuron · Personal Portfolio Project</p>
         </section>
     </main>
 
     <!-- 푸터 -->
     <%- include('../partials/footer') %>
 
-    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
     <script src="/js/login.js?v=<%= Date.now() %>"></script>
+    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
 </body>
 </html>
