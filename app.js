@@ -13,7 +13,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // 번호추천 페이지
-app.get('/', (req, res) => res.render('cookit'));
+app.get('/', (req, res) => res.render('pages/main'));
 app.get('/cookit2', (req, res) => res.render('cookit2'));
 
 // app.use(logger('dev'));

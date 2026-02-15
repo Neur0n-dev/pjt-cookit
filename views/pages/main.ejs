@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookit</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/cookit_face_16.png">
+    <link rel="apple-touch-icon" href="/cookit_icon_180.png">
+    <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/header.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/main.css?v=<%= Date.now() %>">
+</head>
+<body>
+    <!-- 헤더  -->
+    <%- include('../partials/header') %>
+
+    <main class="container">
+        <!-- 히어로 섹션 -->
+        <section class="hero">
+            <div class="hero-badge">🍳 Personal Project · Neuron Engine</div>
+            <h1 class="hero-title">
+                냉장고 속 재료로<br>
+                오늘의 메뉴를 완성하세요.
+            </h1>
+            <p class="hero-desc">
+                재료만 입력하면<br>
+                Cookit이 딱 맞는 메뉴를 찾아드립니다.
+            </p>
+        </section>
+
+        <!-- 2컬럼 레이아웃 -->
+        <section class="content-grid">
+            <!-- 왼쪽: 재료 입력 -->
+            <div class="input-card">
+                <label class="input-label">재료 입력</label>
+
+                <div class="tag-box" id="tag-box">
+                    <div class="tag"><span>양파</span><button class="tag-remove" type="button">&times;</button></div>
+                    <div class="tag"><span>돼지고기</span><button class="tag-remove" type="button">&times;</button></div>
+                    <div class="tag"><span>감자</span><button class="tag-remove" type="button">&times;</button></div>
+                    <input class="tag-input" id="ingredient-input" type="text">
+                </div>
+                <p class="input-hint">Enter로 태그 추가 · Backspace로 마지막 태그 삭제 · 중복/공백 자동 정리</p>
+
+                <!-- 나의 재료 (DB) -->
+                <div class="my-ingredient" id="my-ingredient">
+                    <div class="my-ingredient-head">
+                        <span class="my-ingredient-title">🧊 나의 재료 (DB 추후 연동)</span>
+                        <div class="my-ingredient-meta">
+                            <span id="my-ingredient-count">13개</span>
+                            <button class="btn-small" id="btn-my-ingredient-reload" type="button">새로고침</button>
+                        </div>
+                    </div>
+                    <div class="my-ingredient-list" id="my-ingredient-list">
+                        <button class="ing-btn active" type="button"><span class="ing-dot"></span>양파</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>대파</button>
+                        <button class="ing-btn active" type="button"><span class="ing-dot"></span>감자</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>당근</button>
+                        <button class="ing-btn active" type="button"><span class="ing-dot"></span>돼지고기</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>계란</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>김치</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>두부</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>버섯</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>마늘</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>간장</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>고추장</button>
+                        <button class="ing-btn" type="button"><span class="ing-dot"></span>참기름</button>
+                    </div>
+                    <p class="my-ingredient-hint">버튼을 누르면 재료 입력창에 자동 추가됩니다.</p>
+                </div>
+
+                <!-- 모드 + 추천 개수 -->
+                <div class="option-group">
+                    <div class="option-row">
+                        <span class="option-label">식단 모드</span>
+                        <div class="chip-group" id="mode-group">
+                            <button class="chip active" data-mode="balance" type="button">밸런스</button>
+                            <button class="chip" data-mode="diet" type="button">다이어트</button>
+                            <button class="chip" data-mode="simple" type="button">초간단</button>
+                        </div>
+                    </div>
+
+                    <div class="count-row">
+                        <span class="count-label">추천 개수</span>
+                        <div class="count-group" id="count-group">
+                            <button class="count-chip active" data-count="3" type="button">3</button>
+                            <button class="count-chip" data-count="6" type="button">6</button>
+                            <button class="count-chip" data-count="9" type="button">9</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 버튼 -->
+                <div class="action-row">
+                    <button class="btn-reset" id="btn-reset" type="button">초기화</button>
+                    <button class="btn-recommend" id="btn-recommend" type="button">레시피 추천</button>
+                </div>
+
+                <!-- 상태 메시지 -->
+                <div class="status-text" id="status-text">현재 3개 재료 입력됨 · 모드: 밸런스 · 추천 개수: 3</div>
+            </div>
+
+            <!-- 오른쪽: 추천 결과 미리보기 -->
+            <aside class="preview-card" id="preview-card">
+                <div class="preview-head">
+                    <div>
+                        <h3 class="preview-title" id="preview-title">추천 결과 미리보기</h3>
+                        <p class="preview-sub" id="preview-sub">카드 클릭 → 아래 상세로 이동</p>
+                    </div>
+                    <span class="preview-badge" id="preview-count">5개</span>
+                </div>
+
+                <!-- 탭: 추천 / 즐겨찾기 -->
+                <div class="preview-tabs" id="preview-tabs">
+                    <button class="preview-tab active" data-tab="recommend" type="button">추천</button>
+                    <button class="preview-tab" data-tab="favorite" type="button">
+                        즐겨찾기 <span class="preview-tab-count" id="fav-count">0</span>
+                    </button>
+                </div>
+
+                <!-- 즐겨찾기 검색 (즐겨찾기 탭 활성화 시 표시) -->
+                <div class="preview-search" id="fav-search" style="display:none;">
+                    <input class="preview-search-input" id="fav-search-input" type="text" placeholder="즐겨찾기 검색 (제목/태그)">
+                    <button class="btn-small" id="fav-search-clear" type="button">지우기</button>
+                </div>
+
+                <!-- 요약 -->
+                <div class="preview-summary">
+                    <div class="summary-box">
+                        <span class="summary-label">추천 수</span>
+                        <span class="summary-value" id="summary-count">5개</span>
+                    </div>
+                    <div class="summary-box">
+                        <span class="summary-label">평균 조리시간</span>
+                        <span class="summary-value" id="summary-avg-time">17분</span>
+                    </div>
+                    <div class="summary-box">
+                        <span class="summary-label">부족 재료 TOP</span>
+                        <span class="summary-value" id="summary-missing-top">간장</span>
+                    </div>
+                </div>
+
+                <!-- 레시피 카드 리스트 -->
+                <div class="preview-scroll">
+                    <div class="preview-list" id="preview-list">
+                        <!-- 목업 카드 1 (선택됨) -->
+                        <div class="recipe-card active" data-id="r1">
+                            <span class="recipe-card-fav">★</span>
+                            <div class="recipe-card-top">
+                                <span class="recipe-card-title">양파 돼지고기 볶음</span>
+                                <span class="recipe-card-difficulty">쉬움</span>
+                            </div>
+                            <div class="recipe-card-meta">
+                                <span class="recipe-card-pill">⏱ 15분</span>
+                                <span class="recipe-card-pill">🍽 2인</span>
+                                <span class="recipe-card-pill">#한식</span>
+                            </div>
+                            <div class="recipe-card-missing">부족: 간장, 후추</div>
+                        </div>
+                        <!-- 목업 카드 2 -->
+                        <div class="recipe-card" data-id="r2">
+                            <span class="recipe-card-fav">★</span>
+                            <div class="recipe-card-top">
+                                <span class="recipe-card-title">감자 양파 국물 요리</span>
+                                <span class="recipe-card-difficulty">보통</span>
+                            </div>
+                            <div class="recipe-card-meta">
+                                <span class="recipe-card-pill">⏱ 25분</span>
+                                <span class="recipe-card-pill">🍽 2인</span>
+                                <span class="recipe-card-pill">#국물</span>
+                            </div>
+                            <div class="recipe-card-missing">추가 재료 없이 OK</div>
+                        </div>
+                        <!-- 목업 카드 3 -->
+                        <div class="recipe-card" data-id="r3">
+                            <span class="recipe-card-fav">★</span>
+                            <div class="recipe-card-top">
+                                <span class="recipe-card-title">초간단 돼지고기 덮밥</span>
+                                <span class="recipe-card-difficulty">쉬움</span>
+                            </div>
+                            <div class="recipe-card-meta">
+                                <span class="recipe-card-pill">⏱ 12분</span>
+                                <span class="recipe-card-pill">🍽 1인</span>
+                                <span class="recipe-card-pill">#초간단</span>
+                            </div>
+                            <div class="recipe-card-missing">부족: 계란</div>
+                        </div>
+                        <!-- 목업 카드 4 -->
+                        <div class="recipe-card" data-id="r4">
+                            <span class="recipe-card-fav">★</span>
+                            <div class="recipe-card-top">
+                                <span class="recipe-card-title">감자채 볶음</span>
+                                <span class="recipe-card-difficulty">쉬움</span>
+                            </div>
+                            <div class="recipe-card-meta">
+                                <span class="recipe-card-pill">⏱ 14분</span>
+                                <span class="recipe-card-pill">🍽 2인</span>
+                                <span class="recipe-card-pill">#반찬</span>
+                            </div>
+                            <div class="recipe-card-missing">부족: 소금</div>
+                        </div>
+                        <!-- 목업 카드 5 -->
+                        <div class="recipe-card" data-id="r5">
+                            <span class="recipe-card-fav">★</span>
+                            <div class="recipe-card-top">
+                                <span class="recipe-card-title">양파구이 &amp; 고기 곁들임</span>
+                                <span class="recipe-card-difficulty">쉬움</span>
+                            </div>
+                            <div class="recipe-card-meta">
+                                <span class="recipe-card-pill">⏱ 18분</span>
+                                <span class="recipe-card-pill">🍽 2인</span>
+                                <span class="recipe-card-pill">#구이</span>
+                            </div>
+                            <div class="recipe-card-missing">부족: 버터</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <!-- 상세 레시피 -->
+        <section class="detail" id="detail-section">
+            <div class="detail-head">
+                <h2 class="detail-section-title">상세 레시피</h2>
+                <span class="detail-sub" id="detail-sub">양파 돼지고기 볶음 상세 정보</span>
+            </div>
+
+            <div class="detail-card" id="detail-card">
+                <!-- 제목 + 메타 -->
+                <h2 class="detail-title">양파 돼지고기 볶음</h2>
+                <div class="detail-meta">
+                    <span class="detail-pill">⏱ 15분</span>
+                    <span class="detail-pill">🍽 2인분</span>
+                    <span class="detail-pill">📊 쉬움</span>
+                    <span class="detail-pill">🔥 380kcal</span>
+                </div>
+
+                <!-- 툴바 -->
+                <div class="detail-toolbar">
+                    <p style="color:#888; font-size:14px;">달콤한 양파와 돼지고기를 센 불에 빠르게 볶아내는 간단 한식 레시피입니다.</p>
+                    <div class="detail-tools">
+                        <button class="btn-detail" id="btn-detail-fav" type="button">☆ 즐겨찾기</button>
+                        <button class="btn-detail" id="btn-detail-cart" type="button">🛒 부족 재료 장바구니</button>
+                    </div>
+                </div>
+
+                <hr class="detail-divider">
+
+                <!-- 2컬럼: 재료 + 요리 정보 -->
+                <div class="detail-grid">
+                    <div class="detail-block">
+                        <h3 class="detail-block-title">📋 필수 재료</h3>
+                        <p class="detail-block-sub">4가지</p>
+                        <ul class="detail-checklist">
+                            <li><span class="detail-check"></span>돼지고기 앞다리살 <small>200g</small></li>
+                            <li><span class="detail-check"></span>양파 <small>1개</small></li>
+                            <li><span class="detail-check"></span>대파 <small>1/2대</small></li>
+                            <li><span class="detail-check"></span>식용유 <small>1큰술</small></li>
+                        </ul>
+
+                        <h3 class="detail-block-title" style="margin-top:20px;">💡 선택 재료</h3>
+                        <ul class="detail-checklist">
+                            <li><span class="detail-check"></span>참기름 <small>약간</small></li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-block">
+                        <h3 class="detail-block-title">ℹ️ 요리 정보</h3>
+                        <div class="detail-info-grid">
+                            <div class="detail-info-box">
+                                <span class="detail-info-label">조리시간</span>
+                                <span class="detail-info-value">15분</span>
+                            </div>
+                            <div class="detail-info-box">
+                                <span class="detail-info-label">난이도</span>
+                                <span class="detail-info-value">쉬움</span>
+                            </div>
+                            <div class="detail-info-box">
+                                <span class="detail-info-label">인분</span>
+                                <span class="detail-info-value">2인분</span>
+                            </div>
+                            <div class="detail-info-box">
+                                <span class="detail-info-label">칼로리</span>
+                                <span class="detail-info-value">380kcal</span>
+                            </div>
+                        </div>
+
+                        <!-- 부족 재료 -->
+                        <h3 class="detail-block-title" style="margin-top:20px;">🚨 부족 재료</h3>
+                        <div class="detail-ing-tags">
+                            <span class="detail-ing-tag missing">간장</span>
+                            <span class="detail-ing-tag missing">후추</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 팁 -->
+                <div class="detail-callout">
+                    <span class="detail-callout-icon">💡</span>
+                    <div><b>요리 팁</b><br>센 불에서 빠르게 볶아야 양파가 아삭하게 살아요.</div>
+                </div>
+
+                <hr class="detail-divider">
+
+                <!-- 조리 단계 -->
+                <h3 class="detail-block-title">👨‍🍳 조리 단계</h3>
+                <div class="detail-steps">
+                    <div class="detail-step">
+                        <span class="detail-step-num">1</span>
+                        <p class="detail-step-text">돼지고기를 한 입 크기로 썰고, 양파는 채 썹니다.</p>
+                    </div>
+                    <div class="detail-step">
+                        <span class="detail-step-num">2</span>
+                        <p class="detail-step-text">팬에 식용유를 두르고 중불에서 돼지고기를 볶습니다.</p>
+                    </div>
+                    <div class="detail-step">
+                        <span class="detail-step-num">3</span>
+                        <p class="detail-step-text">고기가 반쯤 익으면 양파를 넣고 함께 볶습니다.</p>
+                    </div>
+                    <div class="detail-step">
+                        <span class="detail-step-num">4</span>
+                        <p class="detail-step-text">간장 2큰술, 후추를 넣고 센 불에서 빠르게 볶아 마무리합니다.</p>
+                    </div>
+                    <div class="detail-step">
+                        <span class="detail-step-num">5</span>
+                        <p class="detail-step-text">대파를 송송 썰어 올리면 완성!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <%- include('../partials/footer') %>
+</body>
+</html>

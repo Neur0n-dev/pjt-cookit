@@ -8,6 +8,9 @@ const elBtnMyKitchen = document.getElementById('btn-my-kitchen');
 // TODO: 로그인 연동 후 서버 세션/토큰으로 판단
 let isLoggedIn = false;
 
+// 로그인 상태 변경 시 호출될 콜백 (다른 JS에서 등록)
+let onLoginStateChange = null;
+
 /* =============================================
    헤더 UI 갱신
 ============================================= */
@@ -20,6 +23,11 @@ function updateHeaderUI() {
     } else {
         elBtnLogin.textContent = 'Login';
         elBtnMyKitchen.style.display = 'none';
+    }
+
+    // 콜백이 등록되어 있으면 호출 (main.js 등에서 활용)
+    if (typeof onLoginStateChange === 'function') {
+        onLoginStateChange(isLoggedIn);
     }
 }
 
