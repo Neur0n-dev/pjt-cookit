@@ -30,6 +30,7 @@
     justify-content: flex-end;
 }
 
+/* ===== Brand ===== */
 .header-brand {
     position: absolute;
     left: 50%;
@@ -47,15 +48,28 @@
     display: grid;
     place-items: center;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 28px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(249, 250, 251, 0.9));
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 6px 14px rgba(17, 24, 39, 0.10);
 }
 
 .header-title {
     font-weight: 900;
-    font-size: 16px;
-    letter-spacing: -0.02em;
+    font-size: 34px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: #0f172a;
+    text-shadow: 0 6px 20px rgba(15, 23, 42, 0.10);
 }
 
+.header-title-accent {
+    background: linear-gradient(90deg, #f97316, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Buttons ===== */
 .btn-header {
     border: 1px solid rgba(11, 15, 25, 0.10);
     background: transparent;
@@ -65,11 +79,15 @@
     cursor: pointer;
     font-weight: 800;
     font-size: 13px;
-    transition: background 0.15s ease, box-shadow 0.15s ease;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
 }
 
 .btn-header:hover {
     background: rgba(11, 15, 25, 0.04);
+}
+
+.btn-header:active {
+    transform: translateY(1px);
 }
 
 .btn-header-primary {

@@ -12,9 +12,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// 번호추천 페이지
+// TODO cookit 페이지 router 나중에 변경 해야되나?
 app.get('/', (req, res) => res.render('pages/main'));
-app.get('/cookit2', (req, res) => res.render('cookit2'));
+app.get('/login', (req, res) => res.render('pages/login'));
 
 // app.use(logger('dev'));
 app.use(logger(function (tokens, req, res) {
