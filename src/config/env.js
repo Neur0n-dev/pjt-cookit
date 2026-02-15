@@ -9,24 +9,24 @@
 require('dotenv').config();
 
 const env = {
-  nodeEnv: process.env.NODE_ENV || 'dev',
-  port: process.env.PORT || 3000,
+    nodeEnv: process.env.NODE_ENV || 'dev',
+    port: process.env.PORT || 3010,
 
-  db: {
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT, 10) || 3306,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_DATABASE || 'lotto',
-  },
+    db: {
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT, 10) || 3306,
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || '',
+        database: process.env.DB_DATABASE || 'lotto',
+    },
 
-  isDev() {
-    return this.nodeEnv === 'dev';
-  },
+    isDev() {
+        return this.nodeEnv === 'dev';
+    },
 
-  isProd() {
-    return this.nodeEnv === 'prod';
-  },
+    isProd() {
+        return this.nodeEnv === 'prod';
+    },
 };
 
 module.exports = env;
