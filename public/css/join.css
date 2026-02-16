@@ -1,5 +1,5 @@
 /* ===== Join ===== */
-/* Layout */
+/* ===== Layout ===== */
 .join-container {
     display: flex;
     justify-content: center;
@@ -7,7 +7,7 @@
     padding: 200px 16px 140px 16px;
 }
 
-/* Card */
+/* ===== Card ===== */
 .join-card {
     width: min(560px, 100%);
     min-width: 450px;
@@ -18,7 +18,7 @@
     padding: 26px;
 }
 
-/* Brand (Cookit tone) */
+/* ===== Brand ===== */
 .join-brand {
     display: flex;
     gap: 12px;
@@ -62,7 +62,7 @@
     font-size: 14px;
 }
 
-/* Alert */
+/* ===== Alert ===== */
 .join-alert {
     background: #fff7ed;
     border: 1px solid #fed7aa;
@@ -73,7 +73,7 @@
     font-size: 14px;
 }
 
-/* Form */
+/* ===== Form ===== */
 .join-form {
     margin-top: 6px;
 }
@@ -89,7 +89,7 @@
     margin: 0 0 6px;
 }
 
-/* Input row */
+/* ===== Input Row ===== */
 .input-wrap {
     display: flex;
     align-items: center;
@@ -112,7 +112,7 @@
     font-size: 15px;
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 .icon-btn {
     border: 0;
     background: transparent;
@@ -127,7 +127,7 @@
     background: #f3f4f6;
 }
 
-/* Duplicate check button */
+/* ===== Duplicate Check Button ===== */
 .btn-check {
     border: 1px solid #e5e7eb;
     background: #fff;
@@ -161,7 +161,7 @@
     opacity: .92;
 }
 
-/* field hints/messages */
+/* ===== Field Hints / Messages ===== */
 .field-hint {
     margin: 8px 2px 0;
     font-size: 12px;
@@ -183,7 +183,7 @@
     color: #dc2626;
 }
 
-/* Links */
+/* ===== Links ===== */
 .join-links {
     display: flex;
     justify-content: center;
@@ -208,7 +208,7 @@
     color: #6b7280;
 }
 
-/* Mobile */
+/* ===== Mobile ===== */
 @media (max-width: 520px) {
     .join-card {
         padding: 22px;

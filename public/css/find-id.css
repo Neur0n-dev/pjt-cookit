@@ -1,5 +1,5 @@
 /* ===== Find Id ===== */
-/* Layout */
+/* ===== Layout ===== */
 .find-container {
     display: flex;
     justify-content: center;
@@ -7,7 +7,7 @@
     padding: 200px 16px 140px 16px;
 }
 
-/* Card */
+/* ===== Card ===== */
 .find-card {
     width: min(520px, 100%);
     min-width: 410px;
@@ -18,7 +18,7 @@
     padding: 26px;
 }
 
-/* Brand */
+/* ===== Brand ===== */
 .find-brand {
     display: flex;
     gap: 12px;
@@ -59,7 +59,7 @@
     font-size: 14px;
 }
 
-/* Result */
+/* ===== Result ===== */
 .find-result {
     padding: 12px;
     border-radius: 12px;
@@ -79,7 +79,7 @@
     color: #991b1b;
 }
 
-/* Form */
+/* ===== Form ===== */
 .field {
     margin-bottom: 14px;
 }
@@ -126,7 +126,7 @@
     background: #f3f4f6;
 }
 
-/* Button */
+/* ===== Button ===== */
 .btn-primary {
     width: 100%;
     border: 0;
@@ -143,7 +143,7 @@
     opacity: .92;
 }
 
-/* Links */
+/* ===== Links ===== */
 .find-links {
     display: flex;
     justify-content: center;
@@ -167,7 +167,7 @@
     color: #6b7280;
 }
 
-/* Mobile */
+/* ===== Mobile ===== */
 @media (max-width: 420px) {
     .find-card {
         min-width: auto;

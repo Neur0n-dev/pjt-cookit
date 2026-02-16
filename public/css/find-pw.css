@@ -1,5 +1,5 @@
 /* ===== Find PW ===== */
-/* Layout */
+/* ===== Layout ===== */
 .find-container {
     display: flex;
     justify-content: center;
@@ -7,7 +7,7 @@
     padding: 200px 16px 140px 16px;
 }
 
-/* card */
+/* ===== Card ===== */
 .find-card {
     width: min(520px, 100%);
     min-width: 410px;
@@ -18,7 +18,7 @@
     padding: 26px;
 }
 
-/* brand */
+/* ===== Brand ===== */
 .find-brand {
     display: flex;
     gap: 12px;
@@ -61,7 +61,7 @@
     line-height: 1.4;
 }
 
-/* result message */
+/* ===== Result Message ===== */
 .find-result {
     padding: 12px;
     border-radius: 12px;
@@ -82,7 +82,7 @@
     color: #991b1b;
 }
 
-/* form */
+/* ===== Form ===== */
 .find-form .field {
     margin-bottom: 14px;
 }
@@ -130,7 +130,7 @@
     background: #f3f4f6;
 }
 
-/* primary button */
+/* ===== Primary Button ===== */
 .btn-primary {
     width: 100%;
     border: 0;
@@ -148,7 +148,7 @@
     opacity: .92;
 }
 
-/* links */
+/* ===== Links ===== */
 .find-links {
     display: flex;
     justify-content: center;
@@ -172,7 +172,7 @@
     color: #6b7280;
 }
 
-/* help box */
+/* ===== Help Box ===== */
 .find-help {
     margin-top: 18px;
     padding: 14px;
@@ -200,7 +200,7 @@
     margin-top: 6px;
 }
 
-/* mobile */
+/* ===== Mobile ===== */
 @media (max-width: 420px) {
     .find-card {
         min-width: auto;

@@ -1,5 +1,5 @@
 /* ===== Login ===== */
-/* Layout */
+/* ===== Layout ===== */
 .login-container {
     display: flex;
     justify-content: center;
@@ -7,7 +7,7 @@
     padding: 200px 16px 140px 16px;
 }
 
-/* Card */
+/* ===== Card ===== */
 .login-card {
     width: min(520px, 100%);
     min-width: 450px;
@@ -18,7 +18,7 @@
     padding: 26px;
 }
 
-/* Brand */
+/* ===== Brand ===== */
 .login-brand {
     display: flex;
     gap: 12px;
@@ -62,7 +62,7 @@
     font-size: 14px;
 }
 
-/* Tabs */
+/* ===== Tabs ===== */
 .login-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -89,7 +89,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
 }
 
-/* Panels */
+/* ===== Panels ===== */
 .login-panel {
     display: none;
 }
@@ -98,7 +98,7 @@
     display: block;
 }
 
-/* Form */
+/* ===== Form ===== */
 .field {
     margin-bottom: 12px;
 }
@@ -145,7 +145,7 @@
     background: #f3f4f6;
 }
 
-/* Alert */
+/* ===== Alert ===== */
 .login-alert {
     background: #fff7ed;
     border: 1px solid #fed7aa;
@@ -156,7 +156,7 @@
     font-size: 14px;
 }
 
-/* Buttons */
+/* ===== Buttons ===== */
 .btn-primary {
     width: 100%;
     border: 0;
@@ -183,7 +183,7 @@
     font-weight: 800;
 }
 
-/* Links */
+/* ===== Links ===== */
 .login-links {
     display: flex;
     justify-content: center;
@@ -207,7 +207,7 @@
     color: #6b7280;
 }
 
-/* Placeholder */
+/* ===== Placeholder ===== */
 .placeholder {
     text-align: center;
     padding: 26px 10px 6px;
@@ -231,7 +231,7 @@
     background: linear-gradient(45deg, #f9fafb, #f3f4f6);
 }
 
-/* Mobile */
+/* ===== Mobile ===== */
 @media (max-width: 520px) {
     .login-card {
         padding: 22px;
