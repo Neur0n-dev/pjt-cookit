@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>비밀번호 재설정 - Cookit</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
+    <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/reset-pw.css?v=<%= Date.now() %>">
+</head>
+
+<body>
+    <main class="container reset-container">
+        <section class="reset-card" aria-label="비밀번호 재설정">
+            <!-- Brand -->
+            <a class="reset-brand" href="/" aria-label="Cookit 홈으로">
+                <span class="reset-icon" aria-hidden="true">🍳</span>
+                <div class="reset-title-wrap">
+                    <h1 class="reset-title">Cook<span class="reset-title-accent">it</span></h1>
+                    <p class="reset-sub">새 비밀번호를 입력해 비밀번호를 재설정합니다.</p>
+                </div>
+            </a>
+
+            <!-- 결과 메시지 -->
+            <% if (typeof result !== 'undefined') { %>
+                <% if (result === true) { %>
+                    <div class="reset-result success">
+                        비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동해 주세요.
+                    </div>
+                <% } else { %>
+                    <div class="reset-result error">
+                        비밀번호 재설정에 실패했습니다. 다시 시도해 주세요.
+                    </div>
+                <% } %>
+            <% } %>
+
+            <form method="POST" action="/reset-pw" class="reset-form" id="resetForm">
+                <div class="field">
+                    <label for="newPassword" class="label">새 비밀번호</label>
+                    <div class="input-wrap">
+                        <input
+                            type="password"
+                            id="newPassword"
+                            name="newPassword"
+                            placeholder="새 비밀번호 입력"
+                            minlength="8"
+                            required
+                        />
+                        <button type="button" class="icon-btn" data-toggle="#newPassword" aria-label="비밀번호 보기/숨기기">👁</button>
+                    </div>
+                    <p class="reset-hint">8자 이상, 영문/숫자 조합을 권장합니다.</p>
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword" class="label">새 비밀번호 확인</label>
+                    <div class="input-wrap">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="새 비밀번호 다시 입력"
+                            minlength="8"
+                            required
+                        />
+                        <button type="button" class="icon-btn" data-toggle="#confirmPassword" aria-label="비밀번호 보기/숨기기">👁</button>
+                    </div>
+
+                    <!-- 프론트 검증 메시지(선택) -->
+                    <div class="reset-inline-msg" id="matchMsg" aria-live="polite"></div>
+                </div>
+
+                <button type="submit" class="btn-primary">비밀번호 변경</button>
+            </form>
+
+            <div class="reset-links">
+                <a href="/login" class="muted">로그인</a>
+                <a href="/join" class="muted">회원가입</a>
+            </div>
+
+            <div class="reset-help">
+                <p class="reset-help-title">안내</p>
+                <ul class="reset-help-list">
+                    <li>새 비밀번호와 확인 비밀번호가 동일해야 합니다.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <%- include('../partials/footer') %>
+
+    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
+</body>
+</html>

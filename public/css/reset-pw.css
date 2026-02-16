@@ -1,0 +1,241 @@
+/* ===== Reset PW ===== */
+/* Layout */
+.reset-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 200px 16px 140px 16px;
+}
+
+/* card */
+.reset-card {
+    width: min(520px, 100%);
+    min-width: 410px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+    padding: 26px;
+}
+
+/* brand */
+.reset-brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.reset-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    font-size: 28px;
+    background: linear-gradient(180deg, #fff, #f9fafb);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 6px 14px rgba(17, 24, 39, 0.10);
+}
+
+.reset-title {
+    margin: 0;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+}
+
+.reset-title-accent {
+    background: linear-gradient(90deg, #f97316, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.reset-sub {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* result message */
+.reset-result {
+    padding: 12px;
+    border-radius: 12px;
+    margin: 0 0 16px;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.reset-result.success {
+    background: #ecfdf5;
+    border: 1px solid #bbf7d0;
+    color: #065f46;
+}
+
+.reset-result.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+/* form */
+.reset-form .field {
+    margin-bottom: 14px;
+}
+
+.label {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0 0 6px;
+}
+
+.input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 12px;
+    background: #fff;
+}
+
+.input-wrap:focus-within {
+    border-color: #111827;
+    box-shadow: 0 0 0 4px rgba(17, 24, 39, .08);
+}
+
+.input-wrap input {
+    border: 0;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+}
+
+/* hint text */
+.reset-hint {
+    margin: 8px 2px 0;
+    color: #9ca3af;
+    font-size: 12.5px;
+    line-height: 1.4;
+}
+
+/* icon button */
+.icon-btn {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: #6b7280;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+}
+
+.icon-btn:hover {
+    background: #f3f4f6;
+}
+
+/* inline message */
+.reset-inline-msg {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: #9ca3af;
+    min-height: 18px;
+}
+
+.reset-inline-msg.ok {
+    color: #065f46;
+}
+
+.reset-inline-msg.bad {
+    color: #991b1b;
+}
+
+/* primary button */
+.btn-primary {
+    width: 100%;
+    border: 0;
+    background: #111827;
+    color: #fff;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.btn-primary:hover {
+    opacity: .92;
+}
+
+/* links */
+.reset-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    font-size: 13px;
+}
+
+.reset-links a:not(:last-child)::after {
+    content: "|";
+    margin-left: 12px;
+    color: #d1d5db;
+}
+
+.reset-links .muted {
+    color: #9ca3af;
+    text-decoration: none;
+}
+
+.reset-links .muted:hover {
+    color: #6b7280;
+}
+
+/* help box */
+.reset-help {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.reset-help-title {
+    margin: 0 0 8px;
+    font-weight: 900;
+    font-size: 13px;
+    color: #111827;
+}
+
+.reset-help-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.reset-help-list li + li {
+    margin-top: 6px;
+}
+
+/* mobile */
+@media (max-width: 420px) {
+    .reset-card {
+        min-width: auto;
+        padding: 22px;
+    }
+
+    .reset-title {
+        font-size: 26px;
+    }
+}
