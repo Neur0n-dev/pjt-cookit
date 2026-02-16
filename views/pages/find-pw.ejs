@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>비밀번호 찾기 - Cookit</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
+    <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/find-pw.css?v=<%= Date.now() %>">
+</head>
+
+<body>
+    <main class="container find-container">
+        <section class="find-card" aria-label="비밀번호 찾기">
+            <!-- Brand -->
+            <a class="find-brand" href="/" aria-label="Cookit 홈으로">
+                <span class="find-icon" aria-hidden="true">🍳</span>
+                <div class="find-title-wrap">
+                    <h1 class="find-title">Cook<span class="find-title-accent">it</span></h1>
+                    <p class="find-sub">아이디와 이름을 입력하면 비밀번호 재설정 안내를 진행합니다.</p>
+                </div>
+            </a>
+
+            <!-- 결과 메시지 -->
+            <% if (typeof result !== 'undefined') { %>
+                <% if (result === true) { %>
+                    <div class="find-result success">
+                        비밀번호 재설정 안내를 전송했습니다. (또는 임시 비밀번호를 발급했습니다.)
+                    </div>
+                <% } else { %>
+                    <div class="find-result error">
+                        입력하신 아이디/이름 정보와 일치하는 계정이 없습니다.
+                    </div>
+                <% } %>
+            <% } %>
+
+            <form method="POST" action="/find-pw" class="find-form">
+                <div class="field">
+                    <label for="userId" class="label">아이디</label>
+                    <div class="input-wrap">
+                        <input
+                            type="text"
+                            id="userId"
+                            name="userId"
+                            placeholder="가입한 아이디"
+                            required
+                        />
+                        <button type="button" class="icon-btn" data-clear="#userId">✕</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="name" class="label">이름</label>
+                    <div class="input-wrap">
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="가입 시 입력한 이름"
+                            required
+                        />
+                        <button type="button" class="icon-btn" data-clear="#name">✕</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">비밀번호 재설정</button>
+            </form>
+
+            <div class="find-links">
+                <a href="/login" class="muted">로그인</a>
+                <a href="/join" class="muted">회원가입</a>
+            </div>
+
+            <div class="find-help">
+                <p class="find-help-title">안내</p>
+                <ul class="find-help-list">
+                    <li>입력 정보가 일치하면 재설정 절차(재설정 링크/임시 비밀번호)가 진행됩니다.</li>
+                    <li>오타가 많다면 아이디/이름을 다시 확인해주세요.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <%- include('../partials/footer') %>
+
+    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
+</body>
+</html>

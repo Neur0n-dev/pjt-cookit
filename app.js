@@ -16,7 +16,8 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('pages/main')); // 메인 페이지
 app.get('/login', (req, res) => res.render('pages/login')); // 로그인 페이지
 app.get('/join', (req, res) => res.render('pages/join')); // 회원가입 페이지
-app.get('/find-id', (req, res) => res.render('pages/find-id')); // 아이디 찾기 체이지
+app.get('/find-id', (req, res) => res.render('pages/find-id')); // 아이디 찾기 페이지
+app.get('/find-pw', (req, res) => res.render('pages/find-pw')); // 비밀전호 찾기 페이지
 
 // app.use(logger('dev'));
 app.use(logger(function (tokens, req, res) {
