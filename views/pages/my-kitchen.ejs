@@ -26,8 +26,26 @@
         ];
 
         const _favorites = [
-            { title: '매콤 닭갈비', desc: '닭가슴살 + 고추장 베이스', url: '/recipe/1' },
-            { title: '간장 치킨 볶음', desc: '간장 + 마늘 조합', url: '/recipe/2' },
+            {
+                title: '매콤 닭갈비',
+                desc: '닭가슴살 + 고추장 베이스',
+                time: '25분', serving: '2인분', difficulty: '보통', kcal: '450kcal',
+                tip: '센 불에서 빠르게 볶아야 양념이 잘 배어요.',
+                ingredients: ['닭가슴살 300g', '고추장 2큰술', '양파 1개', '대파 1대'],
+                optional: ['참기름 약간', '깨 약간'],
+                missing: ['고추장'],
+                steps: ['닭가슴살을 한 입 크기로 썬다.', '양파, 대파를 채 썬다.', '팬에 기름을 두르고 닭가슴살을 볶는다.', '고추장 양념을 넣고 함께 볶는다.', '대파를 올려 마무리한다.'],
+            },
+            {
+                title: '간장 치킨 볶음',
+                desc: '간장 + 마늘 조합',
+                time: '20분', serving: '2인분', difficulty: '쉬움', kcal: '380kcal',
+                tip: '간장은 마지막에 넣어야 타지 않아요.',
+                ingredients: ['닭가슴살 200g', '간장 3큰술', '마늘 5쪽', '양파 1/2개'],
+                optional: ['후추 약간'],
+                missing: [],
+                steps: ['닭가슴살을 한 입 크기로 자른다.', '마늘을 편으로 썬다.', '팬에 기름을 두르고 마늘을 볶는다.', '닭가슴살을 넣고 익힌다.', '간장을 넣고 빠르게 볶아 마무리한다.'],
+            },
         ];
     %>
 
@@ -137,7 +155,7 @@
                     <!-- 즐겨찾기 목록 -->
                     <div class="fav-list" id="fav-list">
                         <% _favorites.forEach((fav, idx) => { %>
-                            <div class="fav-item" data-index="<%= idx %>" data-title="<%= fav.title %>" data-desc="<%= fav.desc %>" data-url="<%= fav.url %>">
+                            <div class="fav-item" data-index="<%= idx %>" data-title="<%= fav.title %>" data-desc="<%= fav.desc %>">
                                 <div class="fav-item-left">
                                     <p class="fav-item-title"><%= fav.title %></p>
                                     <p class="fav-item-desc"><%= fav.desc %></p>
@@ -213,23 +231,13 @@
     <!-- 즐겨찾기 상세 모달 -->
     <div class="modal" id="modal-fav" aria-hidden="true">
         <div class="modal-overlay" data-close="modal-fav"></div>
-        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+        <div class="modal-dialog modal-dialog-lg" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
             <div class="modal-header">
                 <h3 class="modal-title" id="modal-fav-title">레시피 상세</h3>
                 <button class="modal-close" type="button" data-close="modal-fav" aria-label="닫기">✕</button>
             </div>
-            <div class="modal-body">
-                <h3 class="modal-fav-name" id="modal-fav-name"></h3>
-                <p class="modal-fav-desc" id="modal-fav-desc"></p>
-                <div class="modal-fav-preview">
-                    <p class="modal-fav-preview-title">미리보기 (목업)</p>
-                    <p class="modal-fav-preview-text">여기엔 레시피 재료/조리 순서/난이도/소요시간 같은 내용을 넣을 수 있어요.</p>
-                </div>
-                <input type="hidden" id="modal-fav-url">
-            </div>
-            <div class="modal-footer">
-                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-fav">닫기</button>
-                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-fav-go">레시피로 이동</button>
+            <div class="modal-body modal-fav-body" id="modal-fav-body">
+                <!-- JS에서 상세 레시피 렌더링 -->
             </div>
         </div>
     </div>
