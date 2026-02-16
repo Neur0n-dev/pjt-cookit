@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyKitchen - Cookit</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/cookit_face_32.png">
+    <link rel="stylesheet" href="/css/common.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/header.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="/css/my-kitchen.css?v=<%= Date.now() %>">
+</head>
+<body>
+    <!-- 헤더  -->
+    <%- include('../partials/header') %>
+
+    <%
+        /* ===== Mock Data ===== */
+        const _user = { name: '홍길동', nickname: '닉네임cookit', tier: '일반' };
+
+        const _ingredients = [
+            { name: '닭가슴살', memo: '냉동 보관중', expiryDate: '2026.02.16' },
+            { name: '양파', memo: '2개 남음', expiryDate: '2026.02.15' },
+            { name: '간장', memo: '반 정도 남음', expiryDate: '2026.02.14' },
+            { name: '마늘', memo: '다진 마늘', expiryDate: '2026.02.13' },
+        ];
+
+        const _favorites = [
+            { title: '매콤 닭갈비', desc: '닭가슴살 + 고추장 베이스', url: '/recipe/1' },
+            { title: '간장 치킨 볶음', desc: '간장 + 마늘 조합', url: '/recipe/2' },
+        ];
+    %>
+
+    <main class="container kitchen-container">
+        <!-- 탑바 -->
+        <section class="kitchen-topbar">
+            <div class="kitchen-topbar-brand">
+                <div class="kitchen-topbar-icon" aria-hidden="true">🔍</div>
+                <div class="kitchen-topbar-text">
+                    <h1 class="kitchen-topbar-title">My<span class="kitchen-topbar-title-accent">Kitchen</span></h1>
+                    <p class="kitchen-topbar-sub">내 재료 · 즐겨찾기 레시피 · 내 설정를 한 번에 관리해요.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2컬럼 레이아웃 -->
+        <section class="kitchen-grid">
+            <!-- 왼쪽: 프로필 + 통계 -->
+            <aside class="profile-card">
+                <div class="profile">
+                    <div class="profile-avatar" aria-hidden="true">🐣</div>
+                    <div class="profile-meta">
+                        <p class="profile-name"><%= _user.name %>님 <span class="profile-tier"><%= _user.tier %></span></p>
+                        <p class="profile-nickname"><%= _user.nickname %></p>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-label">내 재료</span>
+                        <span class="profile-stat-value" id="stat-ingredient"><%= _ingredients.length %>개</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-label">즐겨찾기</span>
+                        <span class="profile-stat-value" id="stat-favorite"><%= _favorites.length %>개</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-label">회원정보 수정</span>
+                        <span class="profile-stat-value">설정</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 오른쪽: 대시보드 -->
+            <div class="dashboard-card">
+                <h2 class="dashboard-title">대시보드</h2>
+                <p class="dashboard-sub">탭을 눌러 내 재료/즐겨찾기/회원정보 수정을 확인해요.</p>
+
+                <!-- 탭 -->
+                <div class="dashboard-tabs" id="dashboard-tabs" role="tablist">
+                    <button class="dashboard-tab active" type="button" data-tab="ingredients">내 재료</button>
+                    <button class="dashboard-tab" type="button" data-tab="favorites">즐겨찾기</button>
+                    <button class="dashboard-tab" type="button" data-tab="settings">회원정보 수정</button>
+                </div>
+
+                <!-- 내 재료 패널 -->
+                <div class="dashboard-panel active" id="panel-ingredients" role="tabpanel">
+                    <!-- 툴바 -->
+                    <div class="ing-toolbar">
+                        <div class="ing-toolbar-left">
+                            <div class="ing-search">
+                                <span aria-hidden="true">🔎</span>
+                                <input class="ing-search-input" id="ing-search-input" type="text" placeholder="재료 검색 (예: 닭가슴살, 간장)">
+                                <button class="ing-search-clear" id="ing-search-clear" type="button">✕</button>
+                            </div>
+                            <select class="ing-sort" id="ing-sort" aria-label="정렬">
+                                <option value="latest">최신순</option>
+                                <option value="name">이름순</option>
+                            </select>
+                        </div>
+                        <div class="ing-toolbar-right">
+                            <button class="btn-kitchen btn-kitchen-primary" id="btn-ing-add" type="button">+ 재료 추가</button>
+                        </div>
+                    </div>
+
+                    <!-- 재료 목록 -->
+                    <div class="ing-list" id="ing-list">
+                        <% _ingredients.forEach((ing, idx) => { %>
+                            <div class="ing-item" data-index="<%= idx %>" data-name="<%= ing.name %>" data-memo="<%= ing.memo %>" data-date="<%= ing.expiryDate %>">
+                                <div class="ing-item-left">
+                                    <p class="ing-item-title"><%= ing.name %></p>
+                                    <p class="ing-item-meta"><%= ing.memo %> · <%= ing.expiryDate %></p>
+                                </div>
+                                <div class="ing-item-right">
+                                    <button class="btn-kitchen btn-kitchen-ghost btn-ing-edit" type="button" data-index="<%= idx %>">편집</button>
+                                    <button class="btn-kitchen btn-kitchen-primary btn-ing-delete" type="button" data-index="<%= idx %>">삭제</button>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- 검색 결과 없음 -->
+                    <div class="panel-empty" id="ing-empty" style="display:none;">
+                        검색 결과가 없습니다. 다른 키워드로 검색해보세요.
+                    </div>
+                </div>
+
+                <!-- 즐겨찾기 패널 -->
+                <div class="dashboard-panel" id="panel-favorites" role="tabpanel">
+                    <!-- 검색 -->
+                    <div class="fav-search">
+                        <span aria-hidden="true">🔎</span>
+                        <input class="fav-search-input" id="fav-search-input" type="text" placeholder="즐겨찾기 검색 (제목/설명)">
+                        <button class="fav-search-clear" id="fav-search-clear" type="button">✕</button>
+                    </div>
+
+                    <!-- 즐겨찾기 목록 -->
+                    <div class="fav-list" id="fav-list">
+                        <% _favorites.forEach((fav, idx) => { %>
+                            <div class="fav-item" data-index="<%= idx %>" data-title="<%= fav.title %>" data-desc="<%= fav.desc %>" data-url="<%= fav.url %>">
+                                <div class="fav-item-left">
+                                    <p class="fav-item-title"><%= fav.title %></p>
+                                    <p class="fav-item-desc"><%= fav.desc %></p>
+                                </div>
+                                <div class="fav-item-right">
+                                    <button class="btn-kitchen btn-kitchen-primary btn-fav-view" type="button" data-index="<%= idx %>">보기</button>
+                                    <button class="btn-kitchen btn-kitchen-ghost btn-fav-remove" type="button" data-index="<%= idx %>">삭제</button>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- 검색 결과 없음 / 비어있음 -->
+                    <div class="panel-empty" id="fav-empty" style="display:none;">
+                        즐겨찾기한 레시피가 없습니다.
+                    </div>
+                </div>
+
+                <!-- 회원정보 수정 패널 -->
+                <div class="dashboard-panel" id="panel-settings" role="tabpanel">
+                    <div class="settings-form">
+                        <div class="settings-field">
+                            <label class="settings-label" for="settings-name">이름</label>
+                            <input class="settings-input" id="settings-name" type="text" value="<%= _user.name %>">
+                        </div>
+                        <div class="settings-field">
+                            <label class="settings-label" for="settings-nickname">닉네임</label>
+                            <input class="settings-input" id="settings-nickname" type="text" value="<%= _user.nickname %>">
+                        </div>
+                        <div class="settings-actions">
+                            <button class="btn-kitchen btn-kitchen-ghost" id="btn-settings-reset" type="button">되돌리기</button>
+                            <button class="btn-kitchen btn-kitchen-primary" id="btn-settings-save" type="button">저장</button>
+                        </div>
+                    </div>
+                    <div class="panel-empty" style="margin-top:12px;">
+                        현재는 목업 화면입니다. 다음 단계에서 저장 API만 붙이면 됩니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 재료 편집 모달 -->
+    <div class="modal" id="modal-ing" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-ing"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-ing-title">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-ing-title">재료 편집</h3>
+                <button class="modal-close" type="button" data-close="modal-ing" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-ing-name">재료명</label>
+                    <input class="settings-input" id="modal-ing-name" type="text">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-ing-memo">메모</label>
+                    <input class="settings-input" id="modal-ing-memo" type="text" placeholder="예: 냉동 보관중, 2개 남음">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-ing-expiry">유통기한</label>
+                    <input class="settings-input" id="modal-ing-expiry" type="date">
+                </div>
+                <input type="hidden" id="modal-ing-index">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-ing">취소</button>
+                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-ing-save">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 즐겨찾기 상세 모달 -->
+    <div class="modal" id="modal-fav" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-fav"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-fav-title">레시피 상세</h3>
+                <button class="modal-close" type="button" data-close="modal-fav" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body">
+                <h3 class="modal-fav-name" id="modal-fav-name"></h3>
+                <p class="modal-fav-desc" id="modal-fav-desc"></p>
+                <div class="modal-fav-preview">
+                    <p class="modal-fav-preview-title">미리보기 (목업)</p>
+                    <p class="modal-fav-preview-text">여기엔 레시피 재료/조리 순서/난이도/소요시간 같은 내용을 넣을 수 있어요.</p>
+                </div>
+                <input type="hidden" id="modal-fav-url">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-fav">닫기</button>
+                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-fav-go">레시피로 이동</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 삭제 확인 모달 -->
+    <div class="modal" id="modal-delete" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-delete"></div>
+        <div class="modal-dialog modal-dialog-sm" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-delete-title">삭제 확인</h3>
+                <button class="modal-close" type="button" data-close="modal-delete" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-delete-msg" id="modal-delete-msg">정말 삭제하시겠습니까?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-delete">취소</button>
+                <button class="btn-kitchen btn-kitchen-danger" type="button" id="btn-modal-delete-confirm">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <%- include('../partials/footer') %>
+
+    <script src="/js/header.js?v=<%= Date.now() %>"></script>
+    <script src="/js/footer.js?v=<%= Date.now() %>"></script>
+    <script src="/js/my-kitchen.js?v=<%= Date.now() %>"></script>
+</body>
+</html>

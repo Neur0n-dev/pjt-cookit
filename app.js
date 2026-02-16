@@ -19,6 +19,8 @@ app.get('/join', (req, res) => res.render('pages/join')); // 회원가입 페이
 app.get('/find-id', (req, res) => res.render('pages/find-id')); // 아이디 찾기 페이지
 app.get('/find-pw', (req, res) => res.render('pages/find-pw')); // 비밀전호 찾기 페이지
 app.get('/reset-pw', (req, res) => res.render('pages/reset-pw')); // 비밀전호 찾기 페이지
+app.get('/my-kitchen', (req, res) => res.render('pages/my-kitchen')); // 마이키친 페이지
+app.get('/my-kitchen2', (req, res) => res.render('pages/my-kitchen2')); // 마이키친 페이지 (레거시)
 
 // app.use(logger('dev'));
 app.use(logger(function (tokens, req, res) {
