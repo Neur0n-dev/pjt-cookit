@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var {AppError} = require('./src/common/errors')
+var indexRouter = require('./routes/index');
 
 var app = express();
 
@@ -12,15 +13,8 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// TODO cookit 페이지 router 나중에 변경 해야되나?
-app.get('/', (req, res) => res.render('pages/main')); // 메인 페이지
-app.get('/login', (req, res) => res.render('pages/login')); // 로그인 페이지
-app.get('/join', (req, res) => res.render('pages/join')); // 회원가입 페이지
-app.get('/find-id', (req, res) => res.render('pages/find-id')); // 아이디 찾기 페이지
-app.get('/find-pw', (req, res) => res.render('pages/find-pw')); // 비밀전호 찾기 페이지
-app.get('/reset-pw', (req, res) => res.render('pages/reset-pw')); // 비밀전호 찾기 페이지
-app.get('/my-kitchen', (req, res) => res.render('pages/my-kitchen')); // 마이키친 페이지
-app.get('/my-kitchen2', (req, res) => res.render('pages/my-kitchen2')); // 마이키친 페이지 (레거시)
+// 페이지 라우터
+app.use('/', indexRouter);
 
 // app.use(logger('dev'));
 app.use(logger(function (tokens, req, res) {
