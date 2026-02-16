@@ -17,7 +17,12 @@ const env = {
         port: parseInt(process.env.DB_PORT, 10) || 3306,
         user: process.env.DB_USER || 'root',
         password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_DATABASE || 'lotto',
+        database: process.env.DB_DATABASE || 'cookit',
+    },
+
+    jwt: {
+        secret: process.env.JWT_SECRET || 'jw-secret-code',
+        expiresIn: process.env.JWT_EXPIRES_IN || '7d',
     },
 
     isDev() {
