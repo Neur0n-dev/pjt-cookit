@@ -51,9 +51,21 @@ async function login(req, res, next) {
     }
 }
 
+/**
+ * POST /api/auth/logout — 로그아웃
+ */
+async function logout(req, res, next) {
+    try {
+        const result = await authService.logout();
+        res.json({result: true, data: result});
+    } catch (err) {
+        next(err);
+    }
+}
 
 module.exports = {
     register,
     checkDuplicate,
     login,
+    logout,
 };

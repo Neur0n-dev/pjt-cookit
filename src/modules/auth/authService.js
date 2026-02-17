@@ -90,8 +90,18 @@ async function login({userId, password}) {
     };
 }
 
+/**
+ * 로그아웃
+ */
+async function logout() {
+    return {
+        message: '로그아웃 성공! 홈경로로 이동합니다.',
+    };
+}
+
 module.exports = {
     register,
     checkDuplicate,
     login,
+    logout,
 };

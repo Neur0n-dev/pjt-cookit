@@ -4,6 +4,7 @@
  * POST /api/auth/register — 회원가입
  * GET  /api/auth/check/:field — 중복 확인(ID / 닉네임)
  * POST /api/auth/login — 로그인
+ * POST /api/auth/logout — 로그아웃
  */
 
 var express = require('express');
@@ -19,5 +20,8 @@ router.get('/check/:field', authController.checkDuplicate);
 
 /* ===== 로그인 ===== */
 router.post('/login', requireFields(['userId', 'password']), authController.login);
+
+/* ===== 로그아웃 ===== */
+router.post('/logout', authController.logout);
 
 module.exports = router;
