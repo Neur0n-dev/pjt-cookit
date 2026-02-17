@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('cookit:server');
 var http = require('http');
+var db = require('../src/config/db');
 
 /**
  * Get port from environment and store in Express.
@@ -22,12 +23,23 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Start server with DB connection test
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+(async function startServer() {
+    // DB 연결 테스트
+    var dbConnected = await db.testConnection();
+    if (dbConnected) {
+        console.log('DB 연결 성공');
+    } else {
+        console.warn('DB 연결 실패 - 서버는 시작되지만 DB 기능은 작동하지 않습니다');
+    }
+
+    // 서버 시작
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+})();
 
 /**
  * Normalize a port into a number, string, or false.
