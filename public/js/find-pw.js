@@ -35,8 +35,9 @@ elForm.addEventListener('submit', async (e) => {
             elResult.className = 'find-result success';
             elResult.textContent = '본인 확인이 완료되었습니다. 비밀번호 재설정 페이지로 이동합니다.';
             elResult.style.display = 'block';
+            sessionStorage.setItem('resetUuid', json.data.userUuid);
             setTimeout(() => {
-                window.location.href = '/reset-pw?uuid=' + json.data.userUuid;
+                window.location.href = '/reset-pw';
             }, 1500);
         } else {
             elResult.className = 'find-result error';

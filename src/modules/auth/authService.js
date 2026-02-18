@@ -123,6 +123,15 @@ async function findPw({userId, userName}) {
     return {userUuid: user.user_uuid};
 }
 
+/**
+ * 비밀번호 재설정
+ */
+async function resetPw({userUuid, password}) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await authRepository.updatePassword(userUuid, hashedPassword);
+    return {message: '비밀번호가 성공적으로 변경되었습니다.'};
+}
+
 module.exports = {
     register,
     checkDuplicate,
@@ -130,4 +139,5 @@ module.exports = {
     logout,
     findId,
     findPw,
+    resetPw,
 };

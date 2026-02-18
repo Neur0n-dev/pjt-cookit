@@ -100,6 +100,19 @@ async function findPw(req, res, next) {
     }
 }
 
+/**
+ * POST /api/auth/reset-pw — 비밀번호 재설정
+ */
+async function resetPw(req, res, next) {
+    try {
+        const {userUuid, password} = req.body;
+        const result = await authService.resetPw({userUuid, password});
+        res.json({result: true, data: result});
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     checkDuplicate,
@@ -108,4 +121,5 @@ module.exports = {
     status,
     findId,
     findPw,
+    resetPw,
 };

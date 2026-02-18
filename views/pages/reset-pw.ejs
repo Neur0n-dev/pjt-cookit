@@ -23,19 +23,9 @@
             </a>
 
             <!-- 결과 메시지 -->
-            <% if (typeof result !== 'undefined') { %>
-                <% if (result === true) { %>
-                    <div class="reset-result success">
-                        비밀번호가 성공적으로 변경되었습니다. 로그인 페이지로 이동해 주세요.
-                    </div>
-                <% } else { %>
-                    <div class="reset-result error">
-                        비밀번호 재설정에 실패했습니다. 다시 시도해 주세요.
-                    </div>
-                <% } %>
-            <% } %>
+            <div class="reset-result" style="display:none;"></div>
 
-            <form method="POST" action="/reset-pw" class="reset-form" id="resetForm">
+            <form class="reset-form" id="resetForm">
                 <div class="field">
                     <label for="newPassword" class="label">새 비밀번호</label>
                     <div class="input-wrap">

@@ -89,6 +89,18 @@ async function findByUserIdAndName(userId, userName) {
     return rows[0] || null;
 }
 
+/**
+ * 비밀번호 업데이트
+ */
+async function updatePassword(userUuid, hashedPassword) {
+    const sql = `
+        UPDATE t_cookit_users
+        SET user_password = ?
+        WHERE user_uuid = ?
+    `;
+    await db.query(sql, [hashedPassword, userUuid]);
+}
+
 module.exports = {
     insertUser,
     existsByUserId,
@@ -96,4 +108,5 @@ module.exports = {
     findByUserId,
     findByUserName,
     findByUserIdAndName,
+    updatePassword,
 };
