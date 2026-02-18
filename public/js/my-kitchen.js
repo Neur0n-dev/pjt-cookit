@@ -13,17 +13,12 @@ const state = {
 /* ----- DOM ----- */
 // 프로필
 const elProfileName = document.getElementById('profile-name');
-const elProfileTier = document.getElementById('profile-tier');
 const elProfileNickname = document.getElementById('profile-nickname');
 // 통계
 const elStatIngredient = document.getElementById('stat-ingredient');
 const elStatFavorite = document.getElementById('stat-favorite');
 // 대시보드 탭
 const elDashboardTabs = document.getElementById('dashboard-tabs');
-// 패널
-const elPanelIngredients = document.getElementById('panel-ingredients');
-const elPanelFavorites = document.getElementById('panel-favorites');
-const elPanelSettings = document.getElementById('panel-settings');
 // 재료 패널
 const elIngredientSearchInput = document.getElementById('ingredient-search-input');
 const elIngredientSearchClear = document.getElementById('ingredient-search-clear');
@@ -41,7 +36,6 @@ const elBtnSettingsReset = document.getElementById('btn-settings-reset');
 const elBtnSettingsSave = document.getElementById('btn-settings-save');
 const elBtnSettingsPassword = document.getElementById('btn-settings-password');
 // 재료 모달
-const elModalIngredient = document.getElementById('modal-ingredient');
 const elModalIngredientName = document.getElementById('modal-ingredient-name');
 const elModalIngredientQuantity = document.getElementById('modal-ingredient-quantity');
 const elModalIngredientUnit = document.getElementById('modal-ingredient-unit');
@@ -49,11 +43,7 @@ const elModalIngredientMemo = document.getElementById('modal-ingredient-memo');
 const elModalIngredientExpiry = document.getElementById('modal-ingredient-expiry');
 const elModalIngredientUuid = document.getElementById('modal-ingredient-uuid');
 const elBtnModalIngredientSave = document.getElementById('btn-modal-ingredient-save');
-// 즐겨찾기 모달
-const elModalFavorite = document.getElementById('modal-favorite');
-const elModalFavoriteBody = document.getElementById('modal-favorite-body');
 // 삭제 모달
-const elModalDelete = document.getElementById('modal-delete');
 const elModalDeleteMsg = document.getElementById('modal-delete-msg');
 const elBtnModalDeleteConfirm = document.getElementById('btn-modal-delete-confirm');
 // 비밀번호 변경 모달
@@ -120,9 +110,8 @@ function switchTab(tabName) {
 
 /* ----- Profile ----- */
 function renderProfile() {
-    const {name, nickname, tier} = state.profile;
+    const {name, nickname} = state.profile;
     elProfileName.textContent = name;
-    elProfileTier.textContent = tier;
     elProfileNickname.textContent = nickname;
     elSettingsName.value = name;
     elSettingsNickname.value = nickname;
@@ -191,7 +180,10 @@ function renderFavorites() {
 
     // 빈 상태
     if (list.length === 0) {
-        elFavoriteList.innerHTML = '<p class="panel-empty">즐겨찾기한 레시피가 없습니다.</p>';
+        const msg = state.favorites.length === 0
+            ? '즐겨찾기한 레시피가 없습니다.'
+            : '검색 결과가 없습니다.';
+        elFavoriteList.innerHTML = `<p class="panel-empty">${msg}</p>`;
         return;
     }
 
@@ -323,7 +315,6 @@ function bindIngredientEvents() {
         } else {
             // 재료 추가
             try {
-
                 const res = await fetch('/api/user/ingredients', {
                     method: 'POST',
                     headers: {
@@ -387,9 +378,27 @@ function bindFavoriteEvents() {
 
 /* ----- Settings ----- */
 function bindSettingsEvents() {
-    // 저장
-    elBtnSettingsSave.addEventListener('click', () => {
-        // TODO: PUT /api/user/profile
+    // 프로필 수정
+    elBtnSettingsSave.addEventListener('click', async () => {
+        const name = elSettingsName.value.trim();
+        const nickname = elSettingsNickname.value.trim();
+        if (!name || !nickname) return;
+        try {
+            const res = await fetch('/api/user/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({name, nickname})
+            });
+            const json = await res.json();
+            if (!json.result) return;
+            state.profile = {...state.profile, name, nickname};
+            renderProfile();
+        } catch (err) {
+            console.error('updateProfile error:', err);
+        }
     });
 
     // 되돌리기
@@ -409,8 +418,8 @@ function bindPasswordEvents() {
         openModal('modal-password');
     });
 
-    // 변경 저장
-    elBtnModalPasswordSave.addEventListener('click', () => {
+    // 비밀번호 수정
+    elBtnModalPasswordSave.addEventListener('click', async () => {
         const current = elModalPasswordCurrent.value;
         const next = elModalPasswordNew.value;
         const confirm = elModalPasswordConfirm.value;
@@ -420,8 +429,21 @@ function bindPasswordEvents() {
             elModalPasswordConfirm.focus();
             return;
         }
-
-        // TODO: PUT /api/user/password
+        try {
+            const res = await fetch('/api/user/password', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({currentPassword: current, newPassword: next})
+            });
+            const json = await res.json();
+            if (!json.result) return;
+            closeModal('modal-password');
+        } catch (err) {
+            console.error('updatePassword error:', err);
+        }
     });
 }
 
@@ -430,8 +452,7 @@ function bindPasswordEvents() {
 /* ----- Profile ----- */
 async function loadProfile() {
     try {
-
-        const res = await fetch('/api/user/me', {
+        const res = await fetch('/api/user/profile', {
             headers: {Authorization: `Bearer ${token}`}
         });
         const json = await res.json();
@@ -446,13 +467,12 @@ async function loadProfile() {
 /* ----- Ingredients ----- */
 async function loadIngredients() {
     try {
-
         const res = await fetch('/api/user/ingredients', {
             headers: {Authorization: `Bearer ${token}`}
         });
         const json = await res.json();
         if (!json.result) return;
-        state.ingredients = json.data
+        state.ingredients = json.data;
         renderIngredients();
     } catch (err) {
         console.error('loadIngredients error:', err);
@@ -462,13 +482,12 @@ async function loadIngredients() {
 /* ----- Favorites ----- */
 async function loadFavorites() {
     try {
-
         const res = await fetch('/api/user/favorites', {
             headers: {Authorization: `Bearer ${token}`}
         });
         const json = await res.json();
         if (!json.result) return;
-        state.favorites = json.data
+        state.favorites = json.data;
         renderFavorites();
     } catch (err) {
         console.error('loadFavorites error:', err);
