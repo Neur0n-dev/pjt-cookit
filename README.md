@@ -90,7 +90,8 @@ cookit/
 ├── routes/
 │   ├── index.js                    # 페이지 라우터 (메인, 사용자관련, 사용자페이지)
 │   └── api/
-│       └── auth.js                 # 인증 API (회원가입, 로그인, 아이디/비밀번호 찾기 등)
+│       ├── auth.js                 # 인증 API (회원가입, 로그인, 아이디/비밀번호 찾기 등)
+│       └── ingredient.js           # 내 재료 API (CRUD)
 │
 ├── src/
 │   ├── config/
@@ -100,7 +101,8 @@ cookit/
 │   │   ├── auth.js                 # JWT 검증 미들웨어 (requireAuth, optionalAuth)
 │   │   └── validator.js            # 필수 필드 검증 미들웨어
 │   ├── modules/
-│   │   └── auth/                   # 인증 모듈 (controller → service → repository)
+│   │   ├── auth/                   # 인증 모듈 (controller → service → repository)
+│   │   └── ingredient/             # 내 재료 모듈 (controller → service → repository)
 │   └── common/
 │       ├── utils.js                # 공통 유틸
 │       └── errors/                 # AppError, errorCodes
@@ -129,6 +131,32 @@ cookit/
     ├── 02_indexes.sql
     └── 03_constraints.sql
 ```
+
+---
+
+## API 목록
+
+### 인증 (`/api/auth`)
+
+| Method | Path | 설명 | 인증 |
+|--------|------|------|------|
+| POST | `/api/auth/register` | 회원가입 | - |
+| GET | `/api/auth/check/:field` | 아이디/닉네임 중복 확인 | - |
+| POST | `/api/auth/login` | 로그인 (JWT 발급) | - |
+| POST | `/api/auth/logout` | 로그아웃 | - |
+| GET | `/api/auth/status` | 로그인 상태 확인 | JWT |
+| POST | `/api/auth/find-id` | 아이디 찾기 (이름으로 조회) | - |
+| POST | `/api/auth/find-pw` | 비밀번호 찾기 (본인 확인) | - |
+| POST | `/api/auth/reset-pw` | 비밀번호 재설정 | - |
+
+### 내 재료 (`/api/user`)
+
+| Method | Path | 설명 | 인증 |
+|--------|------|------|------|
+| GET | `/api/user/ingredients` | 내 재료 목록 조회 | JWT |
+| POST | `/api/user/ingredients` | 재료 추가 | JWT |
+| PUT | `/api/user/ingredients/:id` | 재료 수정 | JWT |
+| DELETE | `/api/user/ingredients/:id` | 재료 삭제 (soft delete) | JWT |
 
 ---
 
