@@ -14,10 +14,6 @@
     <!-- 헤더  -->
     <%- include('../partials/header') %>
 
-    <%
-        /* ===== Mock Data ===== */
-        const _user = { name: '홍길동', nickname: '닉네임cookit', tier: '일반' };
-    %>
 
     <main class="container kitchen-container">
         <!-- 탑바 -->
@@ -38,8 +34,8 @@
                 <div class="profile">
                     <div class="profile-avatar" aria-hidden="true">🐣</div>
                     <div class="profile-meta">
-                        <p class="profile-name"><%= _user.name %>님 <span class="profile-tier"><%= _user.tier %></span></p>
-                        <p class="profile-nickname"><%= _user.nickname %></p>
+                        <p class="profile-name"><span id="profile-name">-</span>님 <span class="profile-tier" id="profile-tier"></span></p>
+                        <p class="profile-nickname" id="profile-nickname">-</p>
                     </div>
                 </div>
 
@@ -78,28 +74,21 @@
                         <div class="ing-toolbar-left">
                             <div class="ing-search">
                                 <span aria-hidden="true">🔎</span>
-                                <input class="ing-search-input" id="ing-search-input" type="text" placeholder="재료 검색 (예: 닭가슴살, 간장)">
-                                <button class="ing-search-clear" id="ing-search-clear" type="button">✕</button>
+                                <input class="ing-search-input" id="ingredient-search-input" type="text" placeholder="재료 검색 (예: 닭가슴살, 간장)">
+                                <button class="ing-search-clear" id="ingredient-search-clear" type="button">✕</button>
                             </div>
-                            <select class="ing-sort" id="ing-sort" aria-label="정렬">
+                            <select class="ing-sort" id="ingredient-sort" aria-label="정렬">
                                 <option value="latest">최신순</option>
                                 <option value="name">이름순</option>
                             </select>
                         </div>
                         <div class="ing-toolbar-right">
-                            <button class="btn-kitchen btn-kitchen-primary" id="btn-ing-add" type="button">+ 재료 추가</button>
+                            <button class="btn-kitchen btn-kitchen-primary" id="btn-ingredient-add" type="button">+ 재료 추가</button>
                         </div>
                     </div>
 
-                    <!-- 재료 목록 -->
-                    <div class="ing-list" id="ing-list">
-                        <!-- JS에서 API 데이터로 렌더링 -->
-                    </div>
-
-                    <!-- 검색 결과 없음 -->
-                    <div class="panel-empty" id="ing-empty" style="display:none;">
-                        추가한 재료가 없습니다.
-                    </div>
+                    <!-- 재료 목록 (빈 경우 JS에서 empty 메시지 렌더링) -->
+                    <div class="ing-list" id="ingredient-list"></div>
                 </div>
 
                 <!-- 즐겨찾기 패널 -->
@@ -107,19 +96,12 @@
                     <!-- 검색 -->
                     <div class="fav-search">
                         <span aria-hidden="true">🔎</span>
-                        <input class="fav-search-input" id="fav-search-input" type="text" placeholder="즐겨찾기 검색 (제목/설명)">
-                        <button class="fav-search-clear" id="fav-search-clear" type="button">✕</button>
+                        <input class="fav-search-input" id="favorite-search-input" type="text" placeholder="즐겨찾기 검색 (제목/설명)">
+                        <button class="fav-search-clear" id="favorite-search-clear" type="button">✕</button>
                     </div>
 
-                    <!-- 즐겨찾기 목록 -->
-                    <div class="fav-list" id="fav-list">
-                        <!-- JS에서 API 데이터로 렌더링 -->
-                    </div>
-
-                    <!-- 검색 결과 없음 / 비어있음 -->
-                    <div class="panel-empty" id="fav-empty" style="display:none;">
-                        즐겨찾기한 레시피가 없습니다.
-                    </div>
+                    <!-- 즐겨찾기 목록 (빈 경우 JS에서 empty 메시지 렌더링) -->
+                    <div class="fav-list" id="favorite-list"></div>
                 </div>
 
                 <!-- 회원정보 수정 패널 -->
@@ -127,13 +109,14 @@
                     <div class="settings-form">
                         <div class="settings-field">
                             <label class="settings-label" for="settings-name">이름</label>
-                            <input class="settings-input" id="settings-name" type="text" value="<%= _user.name %>">
+                            <input class="settings-input" id="settings-name" type="text">
                         </div>
                         <div class="settings-field">
                             <label class="settings-label" for="settings-nickname">닉네임</label>
-                            <input class="settings-input" id="settings-nickname" type="text" value="<%= _user.nickname %>">
+                            <input class="settings-input" id="settings-nickname" type="text">
                         </div>
                         <div class="settings-actions">
+                            <button class="btn-kitchen btn-kitchen-ghost" id="btn-settings-password" type="button" style="margin-right: auto;">비밀번호 변경</button>
                             <button class="btn-kitchen btn-kitchen-ghost" id="btn-settings-reset" type="button">되돌리기</button>
                             <button class="btn-kitchen btn-kitchen-primary" id="btn-settings-save" type="button">저장</button>
                         </div>
@@ -144,52 +127,52 @@
     </main>
 
     <!-- 재료 편집 모달 -->
-    <div class="modal" id="modal-ing" aria-hidden="true">
-        <div class="modal-overlay" data-close="modal-ing"></div>
-        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-ing-title">
+    <div class="modal" id="modal-ingredient" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-ingredient"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-ingredient-title">
             <div class="modal-header">
-                <h3 class="modal-title" id="modal-ing-title">재료 편집</h3>
-                <button class="modal-close" type="button" data-close="modal-ing" aria-label="닫기">✕</button>
+                <h3 class="modal-title" id="modal-ingredient-title">재료 편집</h3>
+                <button class="modal-close" type="button" data-close="modal-ingredient" aria-label="닫기">✕</button>
             </div>
             <div class="modal-body">
                 <div class="settings-field">
-                    <label class="settings-label" for="modal-ing-name">재료명</label>
-                    <input class="settings-input" id="modal-ing-name" type="text">
+                    <label class="settings-label" for="modal-ingredient-name">재료명</label>
+                    <input class="settings-input" id="modal-ingredient-name" type="text">
                 </div>
                 <div class="settings-field">
-                    <label class="settings-label" for="modal-ing-quantity">재료수량</label>
-                    <input class="settings-input" id="modal-ing-quantity" type="text" placeholder="예: 2">
+                    <label class="settings-label" for="modal-ingredient-quantity">재료수량</label>
+                    <input class="settings-input" id="modal-ingredient-quantity" type="text" placeholder="예: 2">
                 </div>
                 <div class="settings-field">
-                    <label class="settings-label" for="modal-ing-unit">재료단위</label>
-                    <input class="settings-input" id="modal-ing-unit" type="text" placeholder="예: 개, 병, 봉지 등">
+                    <label class="settings-label" for="modal-ingredient-unit">재료단위</label>
+                    <input class="settings-input" id="modal-ingredient-unit" type="text" placeholder="예: 개, 병, 봉지 등">
                 </div>
                 <div class="settings-field">
-                    <label class="settings-label" for="modal-ing-memo">메모</label>
-                    <input class="settings-input" id="modal-ing-memo" type="text" placeholder="예: 냉동 보관중, 2개 남음">
+                    <label class="settings-label" for="modal-ingredient-memo">메모</label>
+                    <input class="settings-input" id="modal-ingredient-memo" type="text" placeholder="예: 냉동 보관중, 2개 남음">
                 </div>
                 <div class="settings-field">
-                    <label class="settings-label" for="modal-ing-expiry">유통기한</label>
-                    <input class="settings-input" id="modal-ing-expiry" type="date">
+                    <label class="settings-label" for="modal-ingredient-expiry">유통기한</label>
+                    <input class="settings-input" id="modal-ingredient-expiry" type="date">
                 </div>
-                <input type="hidden" id="modal-ing-index">
+                <input type="hidden" id="modal-ingredient-uuid">
             </div>
             <div class="modal-footer">
-                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-ing">취소</button>
-                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-ing-save">저장</button>
+                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-ingredient">취소</button>
+                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-ingredient-save">저장</button>
             </div>
         </div>
     </div>
 
     <!-- 즐겨찾기 상세 모달 -->
-    <div class="modal" id="modal-fav" aria-hidden="true">
-        <div class="modal-overlay" data-close="modal-fav"></div>
-        <div class="modal-dialog modal-dialog-lg" role="dialog" aria-modal="true" aria-labelledby="modal-fav-title">
+    <div class="modal" id="modal-favorite" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-favorite"></div>
+        <div class="modal-dialog modal-dialog-lg" role="dialog" aria-modal="true" aria-labelledby="modal-favorite-title">
             <div class="modal-header">
-                <h3 class="modal-title" id="modal-fav-title">레시피 상세</h3>
-                <button class="modal-close" type="button" data-close="modal-fav" aria-label="닫기">✕</button>
+                <h3 class="modal-title" id="modal-favorite-title">레시피 상세</h3>
+                <button class="modal-close" type="button" data-close="modal-favorite" aria-label="닫기">✕</button>
             </div>
-            <div class="modal-body modal-fav-body" id="modal-fav-body">
+            <div class="modal-body modal-fav-body" id="modal-favorite-body">
                 <!-- JS에서 상세 레시피 렌더링 -->
             </div>
         </div>
@@ -209,6 +192,35 @@
             <div class="modal-footer">
                 <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-delete">취소</button>
                 <button class="btn-kitchen btn-kitchen-danger" type="button" id="btn-modal-delete-confirm">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 비밀번호 변경 모달 -->
+    <div class="modal" id="modal-password" aria-hidden="true">
+        <div class="modal-overlay" data-close="modal-password"></div>
+        <div class="modal-dialog modal-dialog-sm" role="dialog" aria-modal="true" aria-labelledby="modal-password-title">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-password-title">비밀번호 변경</h3>
+                <button class="modal-close" type="button" data-close="modal-password" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-password-current">현재 비밀번호</label>
+                    <input class="settings-input" id="modal-password-current" type="password">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-password-new">새 비밀번호</label>
+                    <input class="settings-input" id="modal-password-new" type="password">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-password-confirm">새 비밀번호 확인</label>
+                    <input class="settings-input" id="modal-password-confirm" type="password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-kitchen btn-kitchen-ghost" type="button" data-close="modal-password">취소</button>
+                <button class="btn-kitchen btn-kitchen-primary" type="button" id="btn-modal-password-save">변경</button>
             </div>
         </div>
     </div>

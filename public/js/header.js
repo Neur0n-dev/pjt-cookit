@@ -77,7 +77,9 @@ async function checkAuthStatus() {
 }
 
 /* ----- Init ----- */
-(function initHeader() {
+function initHeader() {
     updateHeaderUI();
     checkAuthStatus();
-})();
+}
+
+document.addEventListener('DOMContentLoaded', initHeader);

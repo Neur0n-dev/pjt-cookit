@@ -149,7 +149,7 @@ cookit/
 | POST | `/api/auth/find-pw` | 비밀번호 찾기 (본인 확인) | - |
 | POST | `/api/auth/reset-pw` | 비밀번호 재설정 | - |
 
-### 내 재료 (`/api/user`)
+### 내 재료 / 회원정보 (`/api/user`)
 
 | Method | Path | 설명 | 인증 |
 |--------|------|------|------|
@@ -157,6 +157,9 @@ cookit/
 | POST | `/api/user/ingredients` | 재료 추가 | JWT |
 | PUT | `/api/user/ingredients/:id` | 재료 수정 | JWT |
 | DELETE | `/api/user/ingredients/:id` | 재료 삭제 (soft delete) | JWT |
+| GET | `/api/user/me` | 프로필 조회 | JWT |
+| PUT | `/api/user/profile` | 회원정보 수정 (이름, 닉네임) | JWT |
+| PUT | `/api/user/password` | 비밀번호 변경 | JWT |
 
 ---
 
