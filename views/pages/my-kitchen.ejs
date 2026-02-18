@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/header.css?v=<%= Date.now() %>">
     <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
     <link rel="stylesheet" href="/css/my-kitchen.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
     <!-- 헤더  -->
@@ -34,7 +35,7 @@
                 <div class="profile">
                     <div class="profile-avatar" aria-hidden="true">🐣</div>
                     <div class="profile-meta">
-                        <p class="profile-name"><span id="profile-name">-</span>님 <span class="profile-tier" id="profile-tier"></span></p>
+                        <p class="profile-name"><span id="profile-name">-</span>님 <span class="profile-tier" id="profile-tier">일반</span></p>
                         <p class="profile-nickname" id="profile-nickname">-</p>
                     </div>
                 </div>
@@ -70,38 +71,38 @@
                 <!-- 내 재료 패널 -->
                 <div class="dashboard-panel active" id="panel-ingredients" role="tabpanel">
                     <!-- 툴바 -->
-                    <div class="ing-toolbar">
-                        <div class="ing-toolbar-left">
-                            <div class="ing-search">
+                    <div class="ingredient-toolbar">
+                        <div class="ingredient-toolbar-left">
+                            <div class="ingredient-search">
                                 <span aria-hidden="true">🔎</span>
-                                <input class="ing-search-input" id="ingredient-search-input" type="text" placeholder="재료 검색 (예: 닭가슴살, 간장)">
-                                <button class="ing-search-clear" id="ingredient-search-clear" type="button">✕</button>
+                                <input class="ingredient-search-input" id="ingredient-search-input" type="text" placeholder="재료 검색 (예: 닭가슴살, 간장)">
+                                <button class="ingredient-search-clear" id="ingredient-search-clear" type="button">✕</button>
                             </div>
-                            <select class="ing-sort" id="ingredient-sort" aria-label="정렬">
+                            <select class="ingredient-sort" id="ingredient-sort" aria-label="정렬">
                                 <option value="latest">최신순</option>
                                 <option value="name">이름순</option>
                             </select>
                         </div>
-                        <div class="ing-toolbar-right">
+                        <div class="ingredient-toolbar-right">
                             <button class="btn-kitchen btn-kitchen-primary" id="btn-ingredient-add" type="button">+ 재료 추가</button>
                         </div>
                     </div>
 
                     <!-- 재료 목록 (빈 경우 JS에서 empty 메시지 렌더링) -->
-                    <div class="ing-list" id="ingredient-list"></div>
+                    <div class="ingredient-list" id="ingredient-list"></div>
                 </div>
 
                 <!-- 즐겨찾기 패널 -->
                 <div class="dashboard-panel" id="panel-favorites" role="tabpanel">
                     <!-- 검색 -->
-                    <div class="fav-search">
+                    <div class="favorite-search">
                         <span aria-hidden="true">🔎</span>
-                        <input class="fav-search-input" id="favorite-search-input" type="text" placeholder="즐겨찾기 검색 (제목/설명)">
-                        <button class="fav-search-clear" id="favorite-search-clear" type="button">✕</button>
+                        <input class="favorite-search-input" id="favorite-search-input" type="text" placeholder="즐겨찾기 검색 (제목/설명)">
+                        <button class="favorite-search-clear" id="favorite-search-clear" type="button">✕</button>
                     </div>
 
                     <!-- 즐겨찾기 목록 (빈 경우 JS에서 empty 메시지 렌더링) -->
-                    <div class="fav-list" id="favorite-list"></div>
+                    <div class="favorite-list" id="favorite-list"></div>
                 </div>
 
                 <!-- 회원정보 수정 패널 -->
@@ -228,6 +229,7 @@
     <!-- 푸터 -->
     <%- include('../partials/footer') %>
 
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="/js/header.js?v=<%= Date.now() %>"></script>
     <script src="/js/footer.js?v=<%= Date.now() %>"></script>
     <script src="/js/my-kitchen.js?v=<%= Date.now() %>"></script>

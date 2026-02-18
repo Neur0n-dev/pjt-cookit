@@ -70,6 +70,27 @@ function closeModal(id) {
     elModal.setAttribute('aria-hidden', 'true');
 }
 
+/* ----- Toast ----- */
+function showToast(msg) {
+    Toastify({
+        text: msg,
+        duration: 2000,
+        gravity: 'top',
+        position: 'center',
+        stopOnFocus: false,
+        style: {
+            background: '#0b0f19',
+            borderRadius: '999px',
+            color: '#ffffff',
+            fontWeight: '800',
+            fontSize: '15px',
+            padding: '14px 26px',
+            boxShadow: '0 10px 30px rgba(11,15,25,0.18)',
+            letterSpacing: '-0.01em',
+        },
+    }).showToast();
+}
+
 function openDeleteModal(msg, callback) {
     elModalDeleteMsg.textContent = msg;
     elBtnModalDeleteConfirm.onclick = () => {
@@ -146,16 +167,20 @@ function renderIngredients() {
     }
 
     elIngredientList.innerHTML = list.map(i => {
-        const quantityText = i.quantity ? ` (${i.quantity}${i.unit || ''})` : '';
+        const qtyNum = parseFloat(i.quantity);
+        const qtyDisplay = i.quantity ? (!isNaN(qtyNum) ? qtyNum : i.quantity) : '';
+        const quantityText = qtyDisplay !== '' ? `<span class="ingredient-item-qty">(${qtyDisplay}${i.unit || ''})</span>` : '';
         const expiryText = i.expiryDate === '3000-12-31' ? '미정' : i.expiryDate;
+        const memoLine = i.memo ? `<p class="ingredient-item-meta">메모: ${i.memo}</p>` : '';
+        const expiryLine = `<p class="ingredient-item-meta">유통기한: ${expiryText}</p>`;
         return `
-        <div class="ing-item" data-uuid="${i.uuid}">
-            <div class="ing-item-info">
-                <span class="ing-item-name">${i.name}${quantityText}</span>
-                <span class="ing-item-expiry">유통기한: ${expiryText}</span>
-                ${i.memo ? `<span class="ing-item-memo">${i.memo}</span>` : ''}
+        <div class="ingredient-item" data-uuid="${i.uuid}">
+            <div class="ingredient-item-left">
+                <p class="ingredient-item-title">${i.name} ${quantityText}</p>
+                ${memoLine}
+                ${expiryLine}
             </div>
-            <div class="ing-item-actions">
+            <div class="ingredient-item-right">
                 <button class="btn-kitchen btn-kitchen-ghost btn-ingredient-edit" type="button">편집</button>
                 <button class="btn-kitchen btn-kitchen-danger btn-ingredient-delete" type="button">삭제</button>
             </div>
@@ -188,12 +213,12 @@ function renderFavorites() {
     }
 
     elFavoriteList.innerHTML = list.map(f => `
-        <div class="fav-item" data-uuid="${f.uuid}">
-            <div class="fav-item-info">
-                <span class="fav-item-title">${f.title}</span>
-                ${f.description ? `<span class="fav-item-desc">${f.description}</span>` : ''}
+        <div class="favorite-item" data-uuid="${f.uuid}">
+            <div class="favorite-item-left">
+                <p class="favorite-item-title">${f.title}</p>
+                ${f.description ? `<p class="favorite-item-desc">${f.description}</p>` : ''}
             </div>
-            <div class="fav-item-actions">
+            <div class="favorite-item-right">
                 <button class="btn-kitchen btn-kitchen-ghost btn-favorite-view" type="button">보기</button>
                 <button class="btn-kitchen btn-kitchen-danger btn-favorite-delete" type="button">삭제</button>
             </div>
@@ -273,6 +298,7 @@ function bindIngredientEvents() {
                     const json = await res.json();
                     if (!json.result) return;
                     await loadIngredients();
+                    showToast('재료가 삭제되었습니다.');
                 } catch (err) {
                     console.error('deleteIngredient error:', err);
                 }
@@ -309,6 +335,7 @@ function bindIngredientEvents() {
                 if (!json.result) return;
                 closeModal('modal-ingredient');
                 await loadIngredients();
+                showToast('재료가 수정되었습니다.');
             } catch (err) {
                 console.error('updateIngredient error:', err);
             }
@@ -333,6 +360,7 @@ function bindIngredientEvents() {
                 if (!json.result) return;
                 closeModal('modal-ingredient');
                 await loadIngredients();
+                showToast('재료가 추가되었습니다.');
             } catch (err) {
                 console.error('addIngredient error:', err);
             }
@@ -396,6 +424,7 @@ function bindSettingsEvents() {
             if (!json.result) return;
             state.profile = {...state.profile, name, nickname};
             renderProfile();
+            showToast('회원정보가 수정되었습니다.');
         } catch (err) {
             console.error('updateProfile error:', err);
         }
@@ -441,6 +470,7 @@ function bindPasswordEvents() {
             const json = await res.json();
             if (!json.result) return;
             closeModal('modal-password');
+            showToast('비밀번호가 변경되었습니다.');
         } catch (err) {
             console.error('updatePassword error:', err);
         }

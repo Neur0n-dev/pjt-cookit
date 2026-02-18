@@ -91,7 +91,8 @@ cookit/
 │   ├── index.js                    # 페이지 라우터 (메인, 사용자관련, 사용자페이지)
 │   └── api/
 │       ├── auth.js                 # 인증 API (회원가입, 로그인, 아이디/비밀번호 찾기 등)
-│       └── ingredient.js           # 내 재료 API (CRUD)
+│       ├── ingredient.js           # 내 재료 API (CRUD)
+│       └── user.js                 # 회원정보 API (프로필 조회/수정, 비밀번호 변경)
 │
 ├── src/
 │   ├── config/
@@ -102,7 +103,8 @@ cookit/
 │   │   └── validator.js            # 필수 필드 검증 미들웨어
 │   ├── modules/
 │   │   ├── auth/                   # 인증 모듈 (controller → service → repository)
-│   │   └── ingredient/             # 내 재료 모듈 (controller → service → repository)
+│   │   ├── ingredient/             # 내 재료 모듈 (controller → service → repository)
+│   │   └── user/                   # 회원정보 모듈 (controller → service → repository)
 │   └── common/
 │       ├── utils.js                # 공통 유틸
 │       └── errors/                 # AppError, errorCodes
@@ -157,7 +159,7 @@ cookit/
 | POST | `/api/user/ingredients` | 재료 추가 | JWT |
 | PUT | `/api/user/ingredients/:id` | 재료 수정 | JWT |
 | DELETE | `/api/user/ingredients/:id` | 재료 삭제 (soft delete) | JWT |
-| GET | `/api/user/me` | 프로필 조회 | JWT |
+| GET | `/api/user/profile` | 프로필 조회 | JWT |
 | PUT | `/api/user/profile` | 회원정보 수정 (이름, 닉네임) | JWT |
 | PUT | `/api/user/password` | 비밀번호 변경 | JWT |
 
