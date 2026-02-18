@@ -74,10 +74,24 @@ async function status(req, res, next) {
     }
 }
 
+/**
+ * POST /api/auth/findId — 아이디 찾기
+ */
+async function findId(req, res, next) {
+    try {
+        const {name} = req.body;
+        const result = await authService.findId({userName: name});
+        res.json({result: true, data: result});
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     checkDuplicate,
     login,
     logout,
     status,
+    findId,
 };

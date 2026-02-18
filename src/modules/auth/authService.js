@@ -99,9 +99,22 @@ async function logout() {
     };
 }
 
+/**
+ * 아이디 찾기
+ */
+async function findId({userName}) {
+    const user = await authRepository.findByUserName(userName);
+    if (!user) {
+        throw new AppError(errorCodes.USER_NOT_FOUND);
+    }
+
+    return {userId: user.user_id};
+}
+
 module.exports = {
     register,
     checkDuplicate,
     login,
     logout,
+    findId,
 };

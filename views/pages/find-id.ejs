@@ -23,19 +23,9 @@
             </a>
 
             <!-- 결과 메시지 -->
-            <% if (typeof result !== 'undefined') { %>
-                <% if (result) { %>
-                    <div class="find-result success">
-                    조회된 아이디: <strong><%= result %></strong>
-                    </div>
-                <% } else { %>
-                    <div class="find-result error">
-                    해당 이름으로 등록된 아이디가 없습니다.
-                    </div>
-                <% } %>
-            <% } %>
+            <div class="find-result" style="display:none;"></div>
 
-            <form method="POST" action="/find-id" class="find-form">
+            <form class="find-form">
                 <div class="field">
                     <label for="name" class="label">이름</label>
                         <div class="input-wrap">

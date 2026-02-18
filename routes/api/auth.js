@@ -6,6 +6,7 @@
  * POST /api/auth/login — 로그인
  * POST /api/auth/logout — 로그아웃
  * GET  /api/auth/status — 로그인 상태 확인
+ * POST /api/auth/find-id — 아이디 찾기
  */
 
 var express = require('express');
@@ -28,5 +29,8 @@ router.post('/logout', authController.logout);
 
 /* ===== 로그인 상태 확인 ===== */
 router.get('/status', requireAuth, authController.status);
+
+/* ===== 아이디 찾기 ===== */
+router.post('/find-id', requireFields(['name']), authController.findId);
 
 module.exports = router;
