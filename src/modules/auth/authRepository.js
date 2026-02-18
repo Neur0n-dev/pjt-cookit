@@ -74,10 +74,26 @@ async function findByUserName(userName) {
     return rows[0] || null;
 }
 
+/**
+ * 아이디 + 이름으로 사용자 조회
+ */
+async function findByUserIdAndName(userId, userName) {
+    const sql = `
+        SELECT user_uuid, user_id, user_name, user_nickname
+        FROM t_cookit_users
+        WHERE user_id = ?
+          AND user_name = ?
+          AND delete_flag = 'N'
+    `;
+    const rows = await db.query(sql, [userId, userName]);
+    return rows[0] || null;
+}
+
 module.exports = {
     insertUser,
     existsByUserId,
     existsByNickname,
     findByUserId,
     findByUserName,
+    findByUserIdAndName,
 };

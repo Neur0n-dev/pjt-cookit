@@ -87,6 +87,19 @@ async function findId(req, res, next) {
     }
 }
 
+/**
+ * POST /api/auth/findPw — 비밀번호 찾기
+ */
+async function findPw(req, res, next) {
+    try {
+        const {userId, name} = req.body;
+        const result = await authService.findPw({userId, userName: name});
+        res.json({result: true, data: result});
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     checkDuplicate,
@@ -94,4 +107,5 @@ module.exports = {
     logout,
     status,
     findId,
+    findPw,
 };

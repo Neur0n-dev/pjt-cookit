@@ -111,10 +111,23 @@ async function findId({userName}) {
     return {userId: user.user_id};
 }
 
+/**
+ * 비밀번호 찾기
+ */
+async function findPw({userId, userName}) {
+    const user = await authRepository.findByUserIdAndName(userId, userName);
+    if (!user) {
+        throw new AppError(errorCodes.USER_NOT_FOUND);
+    }
+
+    return {userUuid: user.user_uuid};
+}
+
 module.exports = {
     register,
     checkDuplicate,
     login,
     logout,
     findId,
+    findPw,
 };

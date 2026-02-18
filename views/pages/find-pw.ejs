@@ -23,19 +23,9 @@
             </a>
 
             <!-- 결과 메시지 -->
-            <% if (typeof result !== 'undefined') { %>
-                <% if (result === true) { %>
-                    <div class="find-result success">
-                        비밀번호 재설정 안내를 전송했습니다. (또는 임시 비밀번호를 발급했습니다.)
-                    </div>
-                <% } else { %>
-                    <div class="find-result error">
-                        입력하신 아이디/이름 정보와 일치하는 계정이 없습니다.
-                    </div>
-                <% } %>
-            <% } %>
+            <div class="find-result" style="display:none;"></div>
 
-            <form method="POST" action="/find-pw" class="find-form">
+            <form class="find-form">
                 <div class="field">
                     <label for="userId" class="label">아이디</label>
                     <div class="input-wrap">
