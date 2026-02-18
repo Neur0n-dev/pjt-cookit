@@ -24,9 +24,9 @@
 | 메인         | `/`           | 재료 입력 + 레시피 추천 + 상세 보기           |
 | 로그인        | `/login`      | 일반/QR/간편 로그인 (탭 전환)              |
 | 회원가입       | `/join`       | 아이디/비밀번호/이름/닉네임 입력 + 중복 확인       |
-| 아이디 찾기     | `/find-id`    | 이름 + 이메일로 아이디 조회                 |
-| 비밀번호 찾기    | `/find-pw`    | 아이디 + 이메일로 인증                    |
-| 비밀번호 재설정   | `/reset-pw`   | 새 비밀번호 입력 + 확인                   |
+| 아이디 찾기     | `/find-id`    | 이름으로 아이디 조회                       |
+| 비밀번호 찾기    | `/find-pw`    | 아이디 + 이름으로 본인 확인                 |
+| 비밀번호 재설정   | `/reset-pw`   | 새 비밀번호 입력 + 확인 (find-pw 경유 필수)  |
 | My Kitchen | `/my-kitchen` | 냉장고 재료 관리 + 즐겨찾기 상세 보기 + 회원정보 수정 |
 
 ---
@@ -42,6 +42,7 @@
 ### Backend
 
 - Node.js + Express 4
+- JWT 인증 (jsonwebtoken + bcryptjs)
 - Morgan (HTTP 로깅, 커스텀 포맷)
 - dotenv 환경 변수 관리
 
@@ -87,12 +88,19 @@ cookit/
 ├── package.json
 │
 ├── routes/
-│   └── index.js                    # 페이지 라우터 (메인, 사용자관련, 사용자페이지)
+│   ├── index.js                    # 페이지 라우터 (메인, 사용자관련, 사용자페이지)
+│   └── api/
+│       └── auth.js                 # 인증 API (회원가입, 로그인, 아이디/비밀번호 찾기 등)
 │
 ├── src/
 │   ├── config/
 │   │   ├── env.js                  # 환경 변수 중앙 관리
 │   │   └── db.js                   # MySQL 커넥션
+│   ├── middleware/
+│   │   ├── auth.js                 # JWT 검증 미들웨어 (requireAuth, optionalAuth)
+│   │   └── validator.js            # 필수 필드 검증 미들웨어
+│   ├── modules/
+│   │   └── auth/                   # 인증 모듈 (controller → service → repository)
 │   └── common/
 │       ├── utils.js                # 공통 유틸
 │       └── errors/                 # AppError, errorCodes
@@ -135,3 +143,5 @@ cookit/
 | `DB_USER`     | `root`      | DB 사용자  |
 | `DB_PASSWORD` | -           | DB 비밀번호 |
 | `DB_DATABASE` | `cookit`    | DB 이름   |
+| `JWT_SECRET`  | -           | JWT 시크릿 |
+| `JWT_EXPIRES_IN` | `1d`     | JWT 만료  |
