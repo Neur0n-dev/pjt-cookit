@@ -63,9 +63,21 @@ async function logout(req, res, next) {
     }
 }
 
+/**
+ * GET /api/auth/status — 로그인 상태 확인
+ */
+async function status(req, res, next) {
+    try {
+        res.json({result: true, data: {user: req.user}});
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     register,
     checkDuplicate,
     login,
     logout,
+    status,
 };

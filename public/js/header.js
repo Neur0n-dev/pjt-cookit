@@ -53,7 +53,31 @@ elBtnMyKitchen.addEventListener('click', () => {
     window.location.href = '/my-kitchen';
 });
 
+/* ----- Token Status ----- */
+async function checkAuthStatus() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const res = await fetch('/api/auth/status', {
+            headers: {'Authorization': 'Bearer ' + token}
+        });
+        const json = await res.json();
+
+        if (!json.result) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            isLoggedIn = false;
+            updateHeaderUI();
+        }
+    } catch (err) {
+        // 네트워크라던지 일시적인 오류로 인하여 로그만 찍고 아무런 작업을 하지 않음.
+        console.error('인증 상태 확인 실패:', err);
+    }
+}
+
 /* ----- Init ----- */
 (function initHeader() {
     updateHeaderUI();
+    checkAuthStatus();
 })();
