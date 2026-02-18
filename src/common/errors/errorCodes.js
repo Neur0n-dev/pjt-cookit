@@ -90,4 +90,14 @@ module.exports = {
         status: 409,
         message: '이미 즐겨찾기에 추가된 레시피입니다.'
     },
+    INGREDIENT_NOT_FOUND: {
+        code: 4005,
+        status: 404,
+        message: '해당 재료를 찾을 수 없습니다.'
+    },
+    INGREDIENT_PERMISSION_DENIED: {
+        code: 4006,
+        status: 403,
+        message: '해당 재료에 대한 권한이 없습니다.'
+    },
 };

@@ -17,36 +17,6 @@
     <%
         /* ===== Mock Data ===== */
         const _user = { name: '홍길동', nickname: '닉네임cookit', tier: '일반' };
-
-        const _ingredients = [
-            { name: '닭가슴살', memo: '냉동 보관중', expiryDate: '2026.02.16' },
-            { name: '양파', memo: '2개 남음', expiryDate: '2026.02.15' },
-            { name: '간장', memo: '반 정도 남음', expiryDate: '2026.02.14' },
-            { name: '마늘', memo: '다진 마늘', expiryDate: '2026.02.13' },
-        ];
-
-        const _favorites = [
-            {
-                title: '매콤 닭갈비',
-                desc: '닭가슴살 + 고추장 베이스',
-                time: '25분', serving: '2인분', difficulty: '보통', kcal: '450kcal',
-                tip: '센 불에서 빠르게 볶아야 양념이 잘 배어요.',
-                ingredients: ['닭가슴살 300g', '고추장 2큰술', '양파 1개', '대파 1대'],
-                optional: ['참기름 약간', '깨 약간'],
-                missing: ['고추장'],
-                steps: ['닭가슴살을 한 입 크기로 썬다.', '양파, 대파를 채 썬다.', '팬에 기름을 두르고 닭가슴살을 볶는다.', '고추장 양념을 넣고 함께 볶는다.', '대파를 올려 마무리한다.'],
-            },
-            {
-                title: '간장 치킨 볶음',
-                desc: '간장 + 마늘 조합',
-                time: '20분', serving: '2인분', difficulty: '쉬움', kcal: '380kcal',
-                tip: '간장은 마지막에 넣어야 타지 않아요.',
-                ingredients: ['닭가슴살 200g', '간장 3큰술', '마늘 5쪽', '양파 1/2개'],
-                optional: ['후추 약간'],
-                missing: [],
-                steps: ['닭가슴살을 한 입 크기로 자른다.', '마늘을 편으로 썬다.', '팬에 기름을 두르고 마늘을 볶는다.', '닭가슴살을 넣고 익힌다.', '간장을 넣고 빠르게 볶아 마무리한다.'],
-            },
-        ];
     %>
 
     <main class="container kitchen-container">
@@ -76,11 +46,11 @@
                 <div class="profile-stats">
                     <div class="profile-stat">
                         <span class="profile-stat-label">내 재료</span>
-                        <span class="profile-stat-value" id="stat-ingredient"><%= _ingredients.length %>개</span>
+                        <span class="profile-stat-value" id="stat-ingredient">0개</span>
                     </div>
                     <div class="profile-stat">
                         <span class="profile-stat-label">즐겨찾기</span>
-                        <span class="profile-stat-value" id="stat-favorite"><%= _favorites.length %>개</span>
+                        <span class="profile-stat-value" id="stat-favorite">0개</span>
                     </div>
                     <div class="profile-stat">
                         <span class="profile-stat-label">회원정보 수정</span>
@@ -123,23 +93,12 @@
 
                     <!-- 재료 목록 -->
                     <div class="ing-list" id="ing-list">
-                        <% _ingredients.forEach((ing, idx) => { %>
-                            <div class="ing-item" data-index="<%= idx %>" data-name="<%= ing.name %>" data-memo="<%= ing.memo %>" data-date="<%= ing.expiryDate %>">
-                                <div class="ing-item-left">
-                                    <p class="ing-item-title"><%= ing.name %></p>
-                                    <p class="ing-item-meta"><%= ing.memo %> · <%= ing.expiryDate %></p>
-                                </div>
-                                <div class="ing-item-right">
-                                    <button class="btn-kitchen btn-kitchen-ghost btn-ing-edit" type="button" data-index="<%= idx %>">편집</button>
-                                    <button class="btn-kitchen btn-kitchen-primary btn-ing-delete" type="button" data-index="<%= idx %>">삭제</button>
-                                </div>
-                            </div>
-                        <% }) %>
+                        <!-- JS에서 API 데이터로 렌더링 -->
                     </div>
 
                     <!-- 검색 결과 없음 -->
                     <div class="panel-empty" id="ing-empty" style="display:none;">
-                        검색 결과가 없습니다. 다른 키워드로 검색해보세요.
+                        추가한 재료가 없습니다.
                     </div>
                 </div>
 
@@ -154,18 +113,7 @@
 
                     <!-- 즐겨찾기 목록 -->
                     <div class="fav-list" id="fav-list">
-                        <% _favorites.forEach((fav, idx) => { %>
-                            <div class="fav-item" data-index="<%= idx %>" data-title="<%= fav.title %>" data-desc="<%= fav.desc %>">
-                                <div class="fav-item-left">
-                                    <p class="fav-item-title"><%= fav.title %></p>
-                                    <p class="fav-item-desc"><%= fav.desc %></p>
-                                </div>
-                                <div class="fav-item-right">
-                                    <button class="btn-kitchen btn-kitchen-primary btn-fav-view" type="button" data-index="<%= idx %>">보기</button>
-                                    <button class="btn-kitchen btn-kitchen-ghost btn-fav-remove" type="button" data-index="<%= idx %>">삭제</button>
-                                </div>
-                            </div>
-                        <% }) %>
+                        <!-- JS에서 API 데이터로 렌더링 -->
                     </div>
 
                     <!-- 검색 결과 없음 / 비어있음 -->
@@ -190,9 +138,6 @@
                             <button class="btn-kitchen btn-kitchen-primary" id="btn-settings-save" type="button">저장</button>
                         </div>
                     </div>
-                    <div class="panel-empty" style="margin-top:12px;">
-                        현재는 목업 화면입니다. 다음 단계에서 저장 API만 붙이면 됩니다.
-                    </div>
                 </div>
             </div>
         </section>
@@ -210,6 +155,14 @@
                 <div class="settings-field">
                     <label class="settings-label" for="modal-ing-name">재료명</label>
                     <input class="settings-input" id="modal-ing-name" type="text">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-ing-quantity">재료수량</label>
+                    <input class="settings-input" id="modal-ing-quantity" type="text" placeholder="예: 2">
+                </div>
+                <div class="settings-field">
+                    <label class="settings-label" for="modal-ing-unit">재료단위</label>
+                    <input class="settings-input" id="modal-ing-unit" type="text" placeholder="예: 개, 병, 봉지 등">
                 </div>
                 <div class="settings-field">
                     <label class="settings-label" for="modal-ing-memo">메모</label>

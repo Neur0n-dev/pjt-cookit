@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 
 /* ===== API 라우터 ===== */
 var authApiRouter = require('./routes/api/auth');
-// var ingredientApiRouter = require('./routes/api/ingredient');
+var ingredientApiRouter = require('./routes/api/ingredient');
 // var recipeApiRouter = require('./routes/api/recipe');
 // var favoriteApiRouter = require('./routes/api/favorite');
 // var userApiRouter = require('./routes/api/user');
@@ -44,7 +44,7 @@ app.use('/', indexRouter);
 
 /* ===== API 라우터 ===== */
 app.use('/api/auth', authApiRouter);
-// app.use('/api', ingredientApiRouter);
+app.use('/api/user', ingredientApiRouter);
 // app.use('/api', recipeApiRouter);
 // app.use('/api', favoriteApiRouter);
 // app.use('/api', userApiRouter);
