@@ -526,6 +526,11 @@ async function loadFavorites() {
 
 /* ----- Init ----- */
 function init() {
+    if (!token) {
+        window.location.href = '/login';
+        return;
+    }
+
     bindModalEvents();
     bindTabEvents();
     bindIngredientEvents();
