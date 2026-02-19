@@ -159,7 +159,11 @@ function renderMyIngredients() {
     elMyIngredientCount.textContent = `${list.length}개`;
 
     if (!list.length) {
-        elMyIngredientList.innerHTML = '<p class="my-ingredient-empty">등록된 재료가 없어요. <a href="/my-kitchen">My Kitchen</a>에서 재료를 추가해보세요.</p>';
+        if (!isLoggedIn) {
+            elMyIngredientList.innerHTML = '<p class="my-ingredient-empty"><a href="/login">로그인</a>하면 내 재료를 불러올 수 있어요.</p>';
+        } else {
+            elMyIngredientList.innerHTML = '<p class="my-ingredient-empty">등록된 재료가 없어요. <a href="/my-kitchen">My Kitchen</a>에서 재료를 추가해보세요.</p>';
+        }
         return;
     }
 
