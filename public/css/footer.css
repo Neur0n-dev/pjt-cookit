@@ -24,15 +24,38 @@
     max-width: 300px;
 }
 
-.footer-logo {
-    font-size: 22px;
+.footer-brand-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
-.footer-name {
+.footer-logo {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.footer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.footer-title {
     font-weight: 900;
-    font-size: 18px;
-    color: #0b0f19;
-    letter-spacing: -0.02em;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+}
+
+.footer-title-accent {
+    background: linear-gradient(90deg, #f97316, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .footer-desc {

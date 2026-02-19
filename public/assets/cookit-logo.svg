@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+
+  <!-- Transparent background -->
+
+  <!-- Pan Outer Shadow Ring -->
+  <circle cx="480" cy="480" r="360" fill="#1f2329"/>
+
+  <!-- Pan Inner Surface -->
+  <circle cx="480" cy="480" r="300" fill="#2c3138"/>
+
+  <!-- Subtle inner highlight -->
+  <circle cx="480" cy="480" r="260" fill="#343a42"/>
+
+  <!-- Egg White -->
+  <path d="
+      M480 350
+      C600 350 640 430 600 520
+      C570 590 520 620 480 610
+      C420 640 350 600 330 520
+      C310 440 360 360 480 350 Z"
+      fill="#f5f5f5"/>
+
+  <!-- Egg Golden Edge -->
+  <path d="
+      M480 350
+      C600 350 640 430 600 520
+      C570 590 520 620 480 610
+      C420 640 350 600 330 520
+      C310 440 360 360 480 350 Z"
+      fill="none"
+      stroke="#e6b85c"
+      stroke-width="8"
+      opacity="0.6"/>
+
+  <!-- Egg Yolk -->
+  <circle cx="480" cy="480" r="110" fill="#ffb400"/>
+  <circle cx="440" cy="440" r="35" fill="#ffd76a" opacity="0.8"/>
+
+  <!-- Handle -->
+  <rect x="690" y="690" width="260" height="90" rx="45"
+        transform="rotate(45 690 690)"
+        fill="#2c3138"/>
+
+</svg>
