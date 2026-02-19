@@ -51,7 +51,7 @@ const elDetailSub = document.getElementById('detail-sub');
 const elDetailCard = document.getElementById('detail-card');
 
 /* ----- Auth ----- */
-const token = localStorage.getItem('token');
+let token = localStorage.getItem('token');
 
 /* ----- Helpers ----- */
 function escapeHtml(str) {
@@ -659,8 +659,10 @@ function init() {
     renderDetail();
     loadMyIngredients();
 
-    // 로그인 상태 변경 시 미리보기 탭 재렌더 (header.js 콜백)
+    // 로그인 상태 변경 시 token 갱신 + 내 재료 재로드 + 미리보기 탭 재렌더 (header.js 콜백)
     onLoginStateChange = () => {
+        token = localStorage.getItem('token');
+        loadMyIngredients();
         renderPreview();
     };
 }
