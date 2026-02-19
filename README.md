@@ -53,7 +53,7 @@
 
 ### AI
 
-- Google Gemini API (추후 연동)
+- Google Gemini 2.0 Flash (@google/generative-ai)
 
 ---
 
@@ -92,6 +92,7 @@ cookit/
 │   └── api/
 │       ├── auth.js                 # 인증 API (회원가입, 로그인, 아이디/비밀번호 찾기 등)
 │       ├── ingredient.js           # 내 재료 API (CRUD)
+│       ├── recipe.js               # 레시피 추천/조회 API
 │       └── user.js                 # 회원정보 API (프로필 조회/수정, 비밀번호 변경)
 │
 ├── src/
@@ -104,6 +105,7 @@ cookit/
 │   ├── modules/
 │   │   ├── auth/                   # 인증 모듈 (controller → service → repository)
 │   │   ├── ingredient/             # 내 재료 모듈 (controller → service → repository)
+│   │   ├── recipe/                 # 레시피 모듈 (controller → service → repository)
 │   │   └── user/                   # 회원정보 모듈 (controller → service → repository)
 │   └── common/
 │       ├── utils.js                # 공통 유틸
@@ -163,6 +165,13 @@ cookit/
 | PUT | `/api/user/profile` | 회원정보 수정 (이름, 닉네임) | JWT |
 | PUT | `/api/user/password` | 비밀번호 변경 | JWT |
 
+### 레시피 (`/api/recipe`)
+
+| Method | Path | 설명 | 인증 |
+|--------|------|------|------|
+| POST | `/api/recipe/recommend` | 레시피 추천 (Gemini LLM) | JWT 선택 |
+| GET | `/api/recipe/:id` | 레시피 상세 조회 | - |
+
 ---
 
 ## 환경 변수 (.env)
@@ -178,3 +187,4 @@ cookit/
 | `DB_DATABASE` | `cookit`    | DB 이름   |
 | `JWT_SECRET`  | -           | JWT 시크릿 |
 | `JWT_EXPIRES_IN` | `1d`     | JWT 만료  |
+| `GEMINI_API_KEY` | -        | Gemini API 키 |
