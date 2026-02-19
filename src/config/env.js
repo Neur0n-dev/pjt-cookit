@@ -25,6 +25,10 @@ const env = {
         expiresIn: process.env.JWT_EXPIRES_IN || '7d',
     },
 
+    gemini: {
+        apiKey: process.env.GEMINI_API_KEY || '',
+    },
+
     isDev() {
         return this.nodeEnv === 'dev';
     },

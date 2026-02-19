@@ -100,4 +100,28 @@ module.exports = {
         status: 403,
         message: '해당 재료에 대한 권한이 없습니다.'
     },
+
+    // ================================
+    // LLM 에러 (5XXX)
+    // ================================
+    LLM_API_KEY_MISSING: {
+        code: 5001,
+        status: 500,
+        message: 'Gemini API 키가 설정되지 않았습니다.'
+    },
+    LLM_REQUEST_FAILED: {
+        code: 5002,
+        status: 502,
+        message: '레시피 추천 요청에 실패했습니다.'
+    },
+    LLM_PARSE_ERROR: {
+        code: 5003,
+        status: 502,
+        message: '레시피 응답을 처리할 수 없습니다.'
+    },
+    INGREDIENTS_REQUIRED: {
+        code: 3005,
+        status: 400,
+        message: '재료를 1개 이상 입력해주세요.'
+    },
 };

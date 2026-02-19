@@ -6,7 +6,7 @@ const state = {
     ingredients: [],            // API에서 재료 데이터 로드
     favorites: [],              // API에서 즐겨찾기 데이터 로드
     ingredientSearchQuery: '',  // 재료 검색어
-    ingredientSort: 'latest',   // 재료 정렬{최신, 이름)
+    ingredientSort: 'latest',   // 재료 정렬 {최신, 이름}
     favoriteSearchQuery: '',    // 즐겨찾기 검색어
 }
 
@@ -55,22 +55,7 @@ const elBtnModalPasswordSave = document.getElementById('btn-modal-password-save'
 /* ----- Auth ----- */
 const token = localStorage.getItem('token');
 
-/* ----- Modal ----- */
-function openModal(id) {
-    const elModal = document.getElementById(id);
-    if (!elModal) return;
-    elModal.classList.add('is-open');
-    elModal.setAttribute('aria-hidden', 'false');
-}
-
-function closeModal(id) {
-    const elModal = document.getElementById(id);
-    if (!elModal) return;
-    elModal.classList.remove('is-open');
-    elModal.setAttribute('aria-hidden', 'true');
-}
-
-/* ----- Toast ----- */
+/* ----- Helpers ----- */
 function showToast(msg) {
     Toastify({
         text: msg,
@@ -89,6 +74,21 @@ function showToast(msg) {
             letterSpacing: '-0.01em',
         },
     }).showToast();
+}
+
+/* ----- Modal ----- */
+function openModal(id) {
+    const elModal = document.getElementById(id);
+    if (!elModal) return;
+    elModal.classList.add('is-open');
+    elModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal(id) {
+    const elModal = document.getElementById(id);
+    if (!elModal) return;
+    elModal.classList.remove('is-open');
+    elModal.setAttribute('aria-hidden', 'true');
 }
 
 function openDeleteModal(msg, callback) {
@@ -115,7 +115,7 @@ function bindModalEvents() {
     });
 }
 
-/* ----- Tab change ----- */
+/* ----- Events: Tab change ----- */
 function switchTab(tabName) {
     // 탭 버튼
     document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
@@ -129,7 +129,7 @@ function switchTab(tabName) {
 
 /* ----- Render ----- */
 
-/* ----- Profile ----- */
+/* ----- Render: Profile ----- */
 function renderProfile() {
     const {name, nickname} = state.profile;
     elProfileName.textContent = name;
@@ -138,7 +138,7 @@ function renderProfile() {
     elSettingsNickname.value = nickname;
 }
 
-/* ----- Ingredients ----- */
+/* ----- Render: Ingredients ----- */
 function renderIngredients() {
     let list = [...state.ingredients];
 
@@ -188,7 +188,7 @@ function renderIngredients() {
     }).join('');
 }
 
-/* ----- Favorites ----- */
+/* ----- Render: Favorites ----- */
 function renderFavorites() {
     let list = [...state.favorites];
 
@@ -228,7 +228,7 @@ function renderFavorites() {
 
 /* ----- Events ----- */
 
-/* ----- Tab ----- */
+/* ----- Events: Tab ----- */
 function bindTabEvents() {
     elDashboardTabs.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-tab]');
@@ -237,7 +237,7 @@ function bindTabEvents() {
     });
 }
 
-/* ----- Ingredient ----- */
+/* ----- Events: Ingredient ----- */
 function bindIngredientEvents() {
     // 검색어 입력
     elIngredientSearchInput.addEventListener('input', (e) => {
@@ -368,7 +368,7 @@ function bindIngredientEvents() {
     });
 }
 
-/* ----- Favorite ----- */
+/* ----- Events: Favorite ----- */
 function bindFavoriteEvents() {
     // 검색어 입력
     elFavoriteSearchInput.addEventListener('input', (e) => {
@@ -404,7 +404,7 @@ function bindFavoriteEvents() {
     });
 }
 
-/* ----- Settings ----- */
+/* ----- Events: Settings ----- */
 function bindSettingsEvents() {
     // 프로필 수정
     elBtnSettingsSave.addEventListener('click', async () => {
@@ -479,7 +479,7 @@ function bindPasswordEvents() {
 
 /* ----- API ----- */
 
-/* ----- Profile ----- */
+/* ----- API: Profile ----- */
 async function loadProfile() {
     try {
         const res = await fetch('/api/user/profile', {
@@ -494,7 +494,7 @@ async function loadProfile() {
     }
 }
 
-/* ----- Ingredients ----- */
+/* ----- API: Ingredients ----- */
 async function loadIngredients() {
     try {
         const res = await fetch('/api/user/ingredients', {
@@ -509,7 +509,7 @@ async function loadIngredients() {
     }
 }
 
-/* ----- Favorites ----- */
+/* ----- API: Favorites ----- */
 async function loadFavorites() {
     try {
         const res = await fetch('/api/user/favorites', {
