@@ -82,6 +82,7 @@ function openModal(id) {
     if (!elModal) return;
     elModal.classList.add('is-open');
     elModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal(id) {
@@ -89,6 +90,9 @@ function closeModal(id) {
     if (!elModal) return;
     elModal.classList.remove('is-open');
     elModal.setAttribute('aria-hidden', 'true');
+    if (!document.querySelector('.modal.is-open')) {
+        document.body.style.overflow = '';
+    }
 }
 
 function openDeleteModal(msg, callback) {
@@ -241,7 +245,6 @@ function bindTabEvents() {
 function bindIngredientEvents() {
     // 검색어 입력
     elIngredientSearchInput.addEventListener('input', (e) => {
-        if (e.isComposing) return;
         state.ingredientSearchQuery = e.target.value.trim();
         renderIngredients();
     });
@@ -372,7 +375,6 @@ function bindIngredientEvents() {
 function bindFavoriteEvents() {
     // 검색어 입력
     elFavoriteSearchInput.addEventListener('input', (e) => {
-        if (e.isComposing) return;
         state.favoriteSearchQuery = e.target.value.trim();
         renderFavorites();
     });
@@ -385,7 +387,7 @@ function bindFavoriteEvents() {
     });
 
     // 즐겨찾기 목록 이벤트 위임 (상세보기 / 삭제)
-    elFavoriteList.addEventListener('click', (e) => {
+    elFavoriteList.addEventListener('click', async (e) => {
         const item = e.target.closest('[data-uuid]');
         if (!item) return;
         const uuid = item.dataset.uuid;
@@ -393,12 +395,106 @@ function bindFavoriteEvents() {
         if (!favorite) return;
 
         if (e.target.closest('.btn-favorite-view')) {
-            // TODO: 즐겨찾기 상세 모달
+            try {
+                const res = await fetch(`/api/recipe/${favorite.recipeUuid}`);
+                const json = await res.json();
+                if (!json.result) return;
+                const r = json.data;
+
+                const difficultyLabel = {easy: '쉬움', medium: '보통', hard: '어려움'};
+                const required = (r.ingredients || []).filter(i => i.isRequired);
+                const optional = (r.ingredients || []).filter(i => !i.isRequired);
+                const steps = r.steps || [];
+
+                document.getElementById('modal-favorite-title').textContent = r.title;
+                document.getElementById('modal-favorite-body').innerHTML = `
+                    ${r.description ? `<p class="modal-fav-desc">${r.description}</p>` : ''}
+                    <div class="modal-fav-meta">
+                        ${r.cookingTime ? `<span class="modal-fav-pill">⏱ ${r.cookingTime}분</span>` : ''}
+                        ${r.servings ? `<span class="modal-fav-pill">🍽 ${r.servings}</span>` : ''}
+                        ${r.difficulty ? `<span class="modal-fav-pill">📊 ${difficultyLabel[r.difficulty] || r.difficulty}</span>` : ''}
+                        ${r.calories ? `<span class="modal-fav-pill">🔥 ${r.calories}</span>` : ''}
+                    </div>
+
+                    <hr class="modal-fav-divider">
+
+                    <div class="modal-fav-grid">
+                        <div>
+                            ${required.length ? `
+                                <h4 class="modal-fav-block-title">⭐ 필수 재료</h4>
+                                <ul class="modal-fav-checklist">
+                                    ${required.map(ingredient => `<li>${ingredient.name}<small>${ingredient.quantity ? ` ${ingredient.quantity}${ingredient.unit || ''}` : ''}</small></li>`).join('')}
+                                </ul>
+                            ` : ''}
+                            ${optional.length ? `
+                                <h4 class="modal-fav-block-title" style="margin-top:14px;">🔸 선택 재료</h4>
+                                <ul class="modal-fav-checklist">
+                                    ${optional.map(ingredient => `<li>${ingredient.name}<small>${ingredient.quantity ? ` ${ingredient.quantity}${ingredient.unit || ''}` : ''}</small></li>`).join('')}
+                                </ul>
+                            ` : ''}
+                        </div>
+                        <div>
+                            <h4 class="modal-fav-block-title">ℹ️ 요리 정보</h4>
+                            <div class="modal-fav-info-grid">
+                                <div class="modal-fav-info-box">
+                                    <span class="modal-fav-info-label">조리시간</span>
+                                    <span class="modal-fav-info-value">${r.cookingTime || 0}분</span>
+                                </div>
+                                <div class="modal-fav-info-box">
+                                    <span class="modal-fav-info-label">난이도</span>
+                                    <span class="modal-fav-info-value">${difficultyLabel[r.difficulty] || '-'}</span>
+                                </div>
+                                <div class="modal-fav-info-box">
+                                    <span class="modal-fav-info-label">인분</span>
+                                    <span class="modal-fav-info-value">${r.servings || '-'}</span>
+                                </div>
+                                <div class="modal-fav-info-box">
+                                    <span class="modal-fav-info-label">칼로리</span>
+                                    <span class="modal-fav-info-value">${r.calories || '-'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${r.tips ? `
+                        <div class="modal-fav-callout">
+                            <span class="modal-fav-callout-icon">💡</span>
+                            <div><b>요리 팁</b><br>${r.tips}</div>
+                        </div>
+                    ` : ''}
+
+                    ${steps.length ? `
+                        <hr class="modal-fav-divider">
+                        <h4 class="modal-fav-block-title">👨‍🍳 조리 단계</h4>
+                        ${steps.map((step, idx) => `
+                            <div class="modal-fav-step">
+                                <span class="modal-fav-step-num">${idx + 1}</span>
+                                <p class="modal-fav-step-text">${step}</p>
+                            </div>
+                        `).join('')}
+                    ` : ''}
+                `;
+                openModal('modal-favorite');
+            } catch (err) {
+                console.error('loadRecipeDetail error:', err);
+            }
         }
 
         if (e.target.closest('.btn-favorite-delete')) {
-            openDeleteModal(`"${favorite.title}" 을(를) 즐겨찾기에서 삭제하시겠습니까?`, () => {
-                // TODO: DELETE /api/favorites/:id
+            openDeleteModal(`"${favorite.title}" 을(를) 즐겨찾기에서 삭제하시겠습니까?`, async () => {
+                try {
+                    const res = await fetch(`/api/user/favorite/${uuid}`, {
+                        method: 'DELETE',
+                        headers: {Authorization: `Bearer ${token}`}
+                    });
+                    const json = await res.json();
+                    if (!json.result) return;
+                    state.favorites = state.favorites.filter(f => f.uuid !== uuid);
+                    renderFavorites();
+                    showToast('즐겨찾기에서 삭제되었습니다.');
+                } catch (err) {
+                    console.error('deleteFavorite error:', err);
+                }
             });
         }
     });
@@ -512,12 +608,20 @@ async function loadIngredients() {
 /* ----- API: Favorites ----- */
 async function loadFavorites() {
     try {
-        const res = await fetch('/api/user/favorites', {
+        const res = await fetch('/api/user/favorite', {
             headers: {Authorization: `Bearer ${token}`}
         });
         const json = await res.json();
         if (!json.result) return;
-        state.favorites = json.data;
+        state.favorites = json.data.map(f => ({
+            uuid: f.favoriteUuid,
+            recipeUuid: f.recipeUuid,
+            title: f.recipeTitle,
+            description: f.recipeDescription,
+            cookingTime: f.cookingTime,
+            cookingDifficulty: f.cookingDifficulty,
+            createdDate: f.createdDate,
+        }));
         renderFavorites();
     } catch (err) {
         console.error('loadFavorites error:', err);

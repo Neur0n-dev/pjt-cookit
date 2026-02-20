@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/header.css?v=<%= Date.now() %>">
     <link rel="stylesheet" href="/css/footer.css?v=<%= Date.now() %>">
     <link rel="stylesheet" href="/css/main.css?v=<%= Date.now() %>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
     <!-- 헤더  -->
@@ -23,7 +24,7 @@
                 오늘의 메뉴를 완성하세요.
             </h1>
             <p class="hero-desc">
-                재료만 입력하면<span class="hero-brand">Cook<span class="header-title-accent">it</span></span>이<br>
+                재료만 입력하면<span class="hero-brand"> Cook<span class="header-title-accent">it</span></span>이<br>
                 지금 만들 수 있는 최적의 메뉴를 제안합니다.
             </p>
         </section>
@@ -45,7 +46,6 @@
                         <span class="my-ingredient-title">🧊 나의 재료</span>
                         <div class="my-ingredient-meta">
                             <span id="my-ingredient-count">0개</span>
-                            <button class="btn-small" id="btn-my-ingredient-reload" type="button">새로고침</button>
                         </div>
                     </div>
                     <div class="my-ingredient-list" id="my-ingredient-list"></div>
@@ -144,6 +144,7 @@
     <!-- 푸터 -->
     <%- include('../partials/footer') %>
 
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="/js/header.js?v=<%= Date.now() %>"></script>
     <script src="/js/footer.js?v=<%= Date.now() %>"></script>
     <script src="/js/main.js?v=<%= Date.now() %>"></script>

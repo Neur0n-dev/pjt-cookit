@@ -32,7 +32,8 @@ async function recommend(req, res, next) {
 async function getDetail(req, res, next) {
     try {
         const recipeUuid = req.params.id;
-        const result = await recipeService.getRecipeDetail(recipeUuid);
+        const userUuid = req.user?.userUuid || null;
+        const result = await recipeService.getRecipeDetail(recipeUuid, userUuid);
         res.json({result: true, data: result});
     } catch (err) {
         next(err);

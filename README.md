@@ -53,7 +53,7 @@
 
 ### AI
 
-- Google Gemini 2.0 Flash (@google/generative-ai)
+- Google Gemini 2.5 Flash (@google/generative-ai)
 
 ---
 

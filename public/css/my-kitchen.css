@@ -588,6 +588,12 @@
     box-shadow: 0 0 0 4px rgba(11, 15, 25, 0.08);
 }
 
+.settings-input[readonly] {
+    background: rgba(11, 15, 25, 0.04);
+    color: rgba(11, 15, 25, 0.45);
+    cursor: default;
+}
+
 .settings-actions {
     display: flex;
     gap: 10px;

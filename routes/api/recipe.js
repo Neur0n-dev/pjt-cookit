@@ -11,9 +11,9 @@ const {optionalAuth} = require('../../src/middleware/auth');
 const recipeController = require('../../src/modules/recipe/recipeController');
 
 /* ===== 레시피 추천 ===== */
-router.post('/recipe/recommend', optionalAuth, recipeController.recommend);
+router.post('/recommend', optionalAuth, recipeController.recommend);
 
 /* ===== 레시피 상세 조회 ===== */
-router.get('/recipe/:id', recipeController.getDetail);
+router.get('/:id', optionalAuth, recipeController.getDetail);
 
 module.exports = router;

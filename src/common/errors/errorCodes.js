@@ -100,6 +100,16 @@ module.exports = {
         status: 403,
         message: '해당 재료에 대한 권한이 없습니다.'
     },
+    FAVORITE_NOT_FOUND: {
+        code: 4007,
+        status: 404,
+        message: '해당 즐겨찾기를 찾을 수 없습니다.'
+    },
+    FAVORITE_PERMISSION_DENIED: {
+        code: 4008,
+        status: 403,
+        message: '해당 즐겨찾기에 대한 권한이 없습니다.'
+    },
 
     // ================================
     // LLM 에러 (5XXX)

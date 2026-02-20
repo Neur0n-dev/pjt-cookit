@@ -66,7 +66,7 @@ async function putMyIngredients(req, res, next) {
 }
 
 /**
- * DELETE /api/user/ingredients — 내 재료 삭제
+ * DELETE /api/user/ingredients/:id — 내 재료 삭제
  */
 async function delMyIngredients(req, res, next) {
     try {

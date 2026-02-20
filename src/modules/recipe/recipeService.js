@@ -12,6 +12,7 @@ const env = require('../../config/env');
 const {AppError, errorCodes} = require('../../common/errors');
 const recipeRepository = require('./recipeRepository');
 const ingredientRepository = require('../ingredient/ingredientRepository');
+const favoriteRepository = require('../favorite/favoriteRepository');
 
 /**
  * 재료 기반 레시피 추천
@@ -66,11 +67,11 @@ async function recommendRecipes({userUuid, ingredients, mode, count}) {
         });
 
         // 레시피 재료 상세 저장
-        const recipeIngredients = (recipe.ingredients || []).map(ing => ({
+        const recipeIngredients = (recipe.ingredients || []).map(ingredient => ({
             ingredientUuid: crypto.randomUUID(),
-            name: ing.name,
-            quantity: ing.quantity,
-            unit: ing.unit,
+            name: ingredient.name,
+            quantity: ingredient.quantity,
+            unit: ingredient.unit,
         }));
         await recipeRepository.insertRecipeIngredients(recipeUuid, recipeIngredients);
 
@@ -84,15 +85,15 @@ async function recommendRecipes({userUuid, ingredients, mode, count}) {
         });
 
         // isOwned, missingIngredients 백엔드 계산
-        const enrichedIngredients = (recipe.ingredients || []).map(ing => ({
-            ...ing,
-            isOwned: ownedNames.some(o =>
-                o.includes(ing.name) || ing.name.includes(o)
-            ),
+        const enrichedIngredients = (recipe.ingredients || []).map(ingredient => ({
+            ...ingredient,
+            isOwned: ingredient.name ? ownedNames.some(o =>
+                o.includes(ingredient.name) || ingredient.name.includes(o)
+            ) : false,
         }));
         const missingIngredients = enrichedIngredients
-            .filter(ing => ing.isRequired && !ing.isOwned)
-            .map(ing => ing.name);
+            .filter(ingredient => ingredient.isRequired && !ingredient.isOwned)
+            .map(ingredient => ingredient.name);
 
         savedRecipes.push({
             uuid: recipeUuid,
@@ -117,7 +118,7 @@ async function recommendRecipes({userUuid, ingredients, mode, count}) {
 /**
  * 레시피 상세 조회
  */
-async function getRecipeDetail(recipeUuid) {
+async function getRecipeDetail(recipeUuid, userUuid = null) {
     const recipe = await recipeRepository.findByRecipeUuid(recipeUuid);
     if (!recipe) {
         throw new AppError(errorCodes.RECIPE_NOT_FOUND);
@@ -127,20 +128,28 @@ async function getRecipeDetail(recipeUuid) {
         ? JSON.parse(recipe.llm_response)
         : recipe.llm_response;
 
+    const isFavorited = userUuid
+        ? !!(await favoriteRepository.findByUserAndRecipe(userUuid, recipeUuid))
+        : false;
     return {
         uuid: recipe.recipe_uuid,
         title: recipe.recipe_title,
         description: recipe.recipe_description,
-        instructions: recipe.recipe_instructions,
         cookingTime: recipe.cooking_time,
         difficulty: recipe.cooking_difficulty,
-        ingredients: (llm?.ingredients || []).map(ing => ({
-            name: ing.name,
-            quantity: ing.quantity || null,
-            unit: ing.unit || null,
-            isRequired: ing.isRequired !== false,
+        servings: llm?.servings || '',
+        calories: llm?.calories || '',
+        tags: llm?.tags || [],
+        ingredients: (llm?.ingredients || []).map(ingredient => ({
+            name: ingredient.name,
+            quantity: ingredient.quantity || null,
+            unit: ingredient.unit || null,
+            isRequired: ingredient.isRequired !== false,
         })),
+        steps: llm?.steps || [],
+        tips: llm?.tips || '',
         createdDate: recipe.created_date,
+        isFavorited,
     };
 }
 
@@ -156,7 +165,7 @@ function getModel() {
     }
     if (!genAI) {
         genAI = new GoogleGenerativeAI(env.gemini.apiKey);
-        model = genAI.getGenerativeModel({model: 'gemini-2.0-flash'});
+        model = genAI.getGenerativeModel({model: 'gemini-2.5-flash'});
     }
     return model;
 }
@@ -232,11 +241,11 @@ function parseRecipeResponse(responseText) {
         servings: recipe.servings || '',
         calories: recipe.calories || '',
         tags: recipe.tags || [],
-        ingredients: (recipe.ingredients || []).map(ing => ({
-            name: ing.name,
-            quantity: ing.quantity || null,
-            unit: ing.unit || null,
-            isRequired: ing.isRequired !== false,
+        ingredients: (recipe.ingredients || []).map(ingredient => ({
+            name: ingredient.name,
+            quantity: ingredient.quantity || null,
+            unit: ingredient.unit || null,
+            isRequired: ingredient.isRequired !== false,
         })),
         steps: recipe.steps || [],
         tips: recipe.tips || '',

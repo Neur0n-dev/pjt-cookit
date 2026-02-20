@@ -12,7 +12,7 @@ var authApiRouter = require('./routes/api/auth');
 var userApiRouter = require('./routes/api/user');
 var ingredientApiRouter = require('./routes/api/ingredient');
 var recipeApiRouter = require('./routes/api/recipe');
-// var favoriteApiRouter = require('./routes/api/favorite');
+var favoriteApiRouter = require('./routes/api/favorite');
 
 var app = express();
 
@@ -46,8 +46,8 @@ app.use('/', indexRouter);
 app.use('/api/auth', authApiRouter);
 app.use('/api/user', userApiRouter);
 app.use('/api/user', ingredientApiRouter);
-app.use('/api', recipeApiRouter);
-// app.use('/api', favoriteApiRouter);
+app.use('/api/recipe', recipeApiRouter);
+app.use('/api/user', favoriteApiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -116,7 +116,6 @@ async function deleteMyIngredients({
     });
 }
 
-
 module.exports = {
     createdMyIngredient,
     getMyIngredients,
